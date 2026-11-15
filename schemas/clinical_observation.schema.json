@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/clinical_observation.schema.json",
+  "title": "ClinicalObservation",
+  "description": "Standardized granular clinical observation with strict provenance and temporal tagging.",
+  "type": "object",
+  "required": [
+    "observation_id",
+    "concept",
+    "normalized_value",
+    "raw_value",
+    "status",
+    "timepoint",
+    "provenance",
+    "extraction"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string",
+      "description": "Unique identifier (UUID or deterministic hash) for the observation."
+    },
+    "concept": {
+      "type": "string",
+      "description": "Canonical clinical concept name (e.g., er_status, tumor_size_mm, birads_category)."
+    },
+    "normalized_value": {
+      "description": "Standardized typed value (string, number, boolean, or structured object).",
+      "type": ["string", "number", "boolean", "object", "null"]
+    },
+    "raw_value": {
+      "description": "Original unparsed string or value directly from the source report.",
+      "type": ["string", "number", "boolean", "null"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "documented",
+        "not_reported",
+        "not_assessed",
+        "not_available",
+        "unknown",
+        "equivocal",
+        "conflicting",
+        "not_applicable"
+      ],
+      "description": "Clinical certainty and reporting status. Never implicitly convert missing to negative."
+    },
+    "unit": {
+      "type": ["string", "null"],
+      "description": "Measurement unit (e.g., mm, %, score, days) where applicable."
+    },
+    "timepoint": {
+      "type": "string",
+      "enum": [
+        "baseline",
+        "pre_treatment",
+        "during_treatment",
+        "during_treatment_early_ac",
+        "during_treatment_inter_regimen",
+        "pre_surgical_resection",
+        "post_treatment_resection",
+        "outcome"
+      ],
+      "description": "Clinical timepoint tag ensuring pre-treatment baseline is segregated from post-NAT and outcome metrics."
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source_dataset", "source_file", "source_record_id"],
+      "properties": {
+        "source_dataset": { "type": "string" },
+        "source_file": { "type": "string" },
+        "source_record_id": { "type": "string" },
+        "source_field_path": { "type": ["string", "null"] }
+      }
+    },
+    "extraction": {
+      "type": "object",
+      "required": ["method"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "structured_parser",
+            "dicom_sr_parser",
+            "nlp_bio_clinicalbert",
+            "rule_regex",
+            "manual_entry"
+          ]
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

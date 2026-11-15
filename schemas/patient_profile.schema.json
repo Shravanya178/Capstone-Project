@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/patient_profile.schema.json",
+  "title": "CanonicalPatientProfile",
+  "description": "Standardized canonical patient clinical profile preserving source provenance, temporal phase, certainty, and manual review flags.",
+  "type": "object",
+  "required": [
+    "patient_id",
+    "source_dataset",
+    "source_patient_id",
+    "profile_generation_timestamp",
+    "demographics",
+    "clinical_extent",
+    "pathology_biomarkers",
+    "observations",
+    "review_flags"
+  ],
+  "properties": {
+    "patient_id": {
+      "type": "string",
+      "description": "Canonical CDSS patient identifier (e.g., TCIA_BreastDX-01-0002, ISPY1_1001)."
+    },
+    "source_dataset": {
+      "type": "string",
+      "description": "Primary originating clinical study or repository (e.g., TCIA_BREAST_DIAGNOSIS, ISPY1_CALGB150007, BREASTPATHQ, TCGA_BRCA)."
+    },
+    "source_patient_id": {
+      "type": "string",
+      "description": "Original raw patient identifier in the source dataset."
+    },
+    "profile_generation_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of profile creation."
+    },
+    "demographics": {
+      "type": "object",
+      "required": ["menopausal_status", "status"],
+      "properties": {
+        "age": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 120
+        },
+        "menopausal_status": {
+          "type": "string",
+          "enum": ["premenopausal", "perimenopausal", "postmenopausal", "unknown", "not_reported"]
+        },
+        "race_ethnicity": {
+          "type": ["string", "null"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["documented", "not_reported", "unknown"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "clinical_extent": {
+      "type": "object",
+      "required": ["laterality", "status"],
+      "properties": {
+        "laterality": {
+          "type": "string",
+          "enum": ["left", "right", "bilateral", "unknown", "not_reported"]
+        },
+        "primary_tumor_size_mm": {
+          "type": ["number", "null"],
+          "minimum": 0.0
+        },
+        "clinical_t_stage": {
+          "type": ["string", "null"]
+        },
+        "clinical_n_stage": {
+          "type": ["string", "null"]
+        },
+        "clinical_m_stage": {
+          "type": ["string", "null"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["documented", "not_reported", "insufficient_information", "unknown"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "pathology_biomarkers": {
+      "type": "object",
+      "required": ["er_status", "pr_status", "her2_status", "status"],
+      "properties": {
+        "histologic_type": {
+          "type": ["string", "null"]
+        },
+        "histologic_grade": {
+          "type": ["string", "null"],
+          "enum": ["grade_1", "grade_2", "grade_3", "unknown", "not_reported", null]
+        },
+        "er_status": {
+          "type": "string",
+          "enum": ["positive", "negative", "er_low", "equivocal", "unknown", "not_reported"]
+        },
+        "er_percentage": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "er_low_flag": {
+          "type": ["boolean", "null"]
+        },
+        "pr_status": {
+          "type": "string",
+          "enum": ["positive", "negative", "equivocal", "unknown", "not_reported"]
+        },
+        "pr_percentage": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "her2_status": {
+          "type": "string",
+          "enum": ["positive", "negative", "equivocal", "unknown", "not_reported"]
+        },
+        "her2_ihc_score": {
+          "type": ["string", "null"],
+          "enum": ["0", "1+", "2+", "3+", "equivocal", "unknown", "not_reported", null]
+        },
+        "her2_fish_ratio": {
+          "type": ["number", "null"],
+          "minimum": 0.0
+        },
+        "her2_fish_status": {
+          "type": ["string", "null"],
+          "enum": ["positive", "negative", "equivocal", "not_performed", "unknown", "not_reported", null]
+        },
+        "ki67_index": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "molecular_subtype": {
+          "type": "string",
+          "enum": [
+            "luminal_a",
+            "luminal_b_her2_negative",
+            "luminal_b_her2_positive",
+            "her2_enriched",
+            "triple_negative",
+            "luminal_unspecified",
+            "unknown",
+            "not_reported"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["documented", "not_reported", "equivocal", "conflicting", "unknown"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "clinical_timepoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["timepoint", "observations"],
+        "properties": {
+          "timepoint": {
+            "type": "string",
+            "enum": [
+              "baseline",
+              "pre_treatment",
+              "during_treatment",
+              "during_treatment_early_ac",
+              "during_treatment_inter_regimen",
+              "pre_surgical_resection",
+              "post_treatment_resection",
+              "outcome"
+            ]
+          },
+          "observations": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/clinical_observation" }
+          }
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "description": "Complete flat list of all granular clinical observations.",
+      "items": { "$ref": "#/$defs/clinical_observation" }
+    },
+    "review_flags": {
+      "type": "array",
+      "description": "Clinical attention flags identifying missing, equivocal, or conflicting parameters requiring clinician review.",
+      "items": {
+        "type": "object",
+        "required": ["flag_type", "severity", "field", "message"],
+        "properties": {
+          "flag_type": {
+            "type": "string",
+            "enum": ["missing_critical_data", "equivocal_biomarker", "conflicting_evidence", "er_low_notification", "temporal_warning", "unverified_rule"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "warning", "info"]
+          },
+          "field": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "clinical_observation": {
+      "type": "object",
+      "required": [
+        "observation_id",
+        "concept",
+        "normalized_value",
+        "raw_value",
+        "status",
+        "timepoint",
+        "provenance",
+        "extraction"
+      ],
+      "properties": {
+        "observation_id": { "type": "string" },
+        "concept": { "type": "string" },
+        "normalized_value": { "type": ["string", "number", "boolean", "object", "null"] },
+        "raw_value": { "type": ["string", "number", "boolean", "object", "null"] },
+        "status": {
+          "type": "string",
+          "enum": [
+            "documented",
+            "not_reported",
+            "not_assessed",
+            "not_available",
+            "unknown",
+            "equivocal",
+            "conflicting",
+            "not_applicable"
+          ]
+        },
+        "unit": { "type": ["string", "null"] },
+        "timepoint": {
+          "type": "string",
+          "enum": [
+            "baseline",
+            "pre_treatment",
+            "during_treatment",
+            "during_treatment_early_ac",
+            "during_treatment_inter_regimen",
+            "pre_surgical_resection",
+            "post_treatment_resection",
+            "outcome"
+          ]
+        },
+        "provenance": {
+          "type": "object",
+          "required": ["source_dataset", "source_file", "source_record_id"],
+          "properties": {
+            "source_dataset": { "type": "string" },
+            "source_file": { "type": "string" },
+            "source_record_id": { "type": "string" },
+            "source_field_path": { "type": ["string", "null"] }
+          }
+        },
+        "extraction": {
+          "type": "object",
+          "required": ["method"],
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": [
+                "structured_parser",
+                "dicom_sr_parser",
+                "nlp_bio_clinicalbert",
+                "rule_regex",
+                "rule_regex_fallback",
+                "manual_entry"
+              ]
+            },
+            "confidence": {
+              "type": ["number", "null"],
+              "minimum": 0.0,
+              "maximum": 1.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

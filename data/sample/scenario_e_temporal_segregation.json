@@ -1,0 +1,127 @@
+{
+  "patient_id": "SCENARIO_E_TEMPORAL_SEGREGATION",
+  "source_dataset": "BREASTPATHQ",
+  "source_patient_id": "P1",
+  "profile_generation_timestamp": "2026-11-15T14:03:44.653712+00:00",
+  "demographics": {
+    "age": null,
+    "menopausal_status": "not_reported",
+    "race_ethnicity": null,
+    "status": "not_reported"
+  },
+  "clinical_extent": {
+    "laterality": "not_reported",
+    "primary_tumor_size_mm": 35.0,
+    "clinical_t_stage": null,
+    "clinical_n_stage": null,
+    "clinical_m_stage": null,
+    "status": "documented"
+  },
+  "pathology_biomarkers": {
+    "histologic_type": null,
+    "histologic_grade": null,
+    "er_status": "positive",
+    "er_percentage": null,
+    "er_low_flag": false,
+    "pr_status": "positive",
+    "pr_percentage": null,
+    "her2_status": "negative",
+    "her2_ihc_score": "0",
+    "her2_fish_ratio": null,
+    "her2_fish_status": null,
+    "ki67_index": null,
+    "molecular_subtype": "luminal_unspecified",
+    "status": "documented"
+  },
+  "clinical_timepoints": [
+    {
+      "timepoint": "baseline",
+      "observations": [
+        {
+          "observation_id": "obs-baseline-001",
+          "concept": "primary_tumor_size_mm",
+          "normalized_value": 35.0,
+          "raw_value": 35.0,
+          "status": "documented",
+          "unit": "mm",
+          "timepoint": "baseline",
+          "provenance": {
+            "source_dataset": "BREASTPATHQ",
+            "source_file": "features.xlsx",
+            "source_record_id": "P1",
+            "source_field_path": "size"
+          },
+          "extraction": {
+            "method": "structured_parser",
+            "confidence": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "timepoint": "post_treatment_resection",
+      "observations": [
+        {
+          "observation_id": "obs-resection-002",
+          "concept": "residual_tumor_size_mm",
+          "normalized_value": 8.0,
+          "raw_value": 8.0,
+          "status": "documented",
+          "unit": "mm",
+          "timepoint": "post_treatment_resection",
+          "provenance": {
+            "source_dataset": "BREASTPATHQ",
+            "source_file": "features.xlsx",
+            "source_record_id": "P1_Scan99",
+            "source_field_path": "residual"
+          },
+          "extraction": {
+            "method": "structured_parser",
+            "confidence": 1.0
+          }
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "obs-baseline-001",
+      "concept": "primary_tumor_size_mm",
+      "normalized_value": 35.0,
+      "raw_value": 35.0,
+      "status": "documented",
+      "unit": "mm",
+      "timepoint": "baseline",
+      "provenance": {
+        "source_dataset": "BREASTPATHQ",
+        "source_file": "features.xlsx",
+        "source_record_id": "P1",
+        "source_field_path": "size"
+      },
+      "extraction": {
+        "method": "structured_parser",
+        "confidence": 1.0
+      }
+    },
+    {
+      "observation_id": "obs-resection-002",
+      "concept": "residual_tumor_size_mm",
+      "normalized_value": 8.0,
+      "raw_value": 8.0,
+      "status": "documented",
+      "unit": "mm",
+      "timepoint": "post_treatment_resection",
+      "provenance": {
+        "source_dataset": "BREASTPATHQ",
+        "source_file": "features.xlsx",
+        "source_record_id": "P1_Scan99",
+        "source_field_path": "residual"
+      },
+      "extraction": {
+        "method": "structured_parser",
+        "confidence": 1.0
+      }
+    }
+  ],
+  "review_flags": []
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/guideline_check.schema.json",
+  "title": "GuidelineCheckEvaluation",
+  "description": "Standardized deterministic guideline evaluation result contract consumed by downstream safety engines and clinical UI.",
+  "type": "object",
+  "required": [
+    "patient_id",
+    "evaluation_timestamp",
+    "guideline_version_set",
+    "checks"
+  ],
+  "properties": {
+    "patient_id": {
+      "type": "string"
+    },
+    "evaluation_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "guideline_version_set": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "rule_name",
+          "guideline_name",
+          "guideline_version",
+          "domain",
+          "result",
+          "explanation",
+          "source",
+          "manual_review_required",
+          "verification_status"
+        ],
+        "properties": {
+          "rule_id": { "type": "string" },
+          "rule_name": { "type": "string" },
+          "guideline_name": { "type": "string" },
+          "guideline_version": { "type": "string" },
+          "publication_date": { "type": ["string", "null"] },
+          "domain": {
+            "type": "string",
+            "enum": [
+              "early_breast_cancer",
+              "locally_advanced",
+              "metastatic",
+              "systemic_neoadjuvant",
+              "systemic_adjuvant",
+              "biomarker_testing",
+              "locoregional_surgery"
+            ]
+          },
+          "target_intervention": { "type": ["string", "null"] },
+          "result": {
+            "type": "string",
+            "enum": [
+              "applicable",
+              "not_applicable",
+              "insufficient_information",
+              "requires_review",
+              "conflicting_information"
+            ]
+          },
+          "required_fields": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "matched_criteria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["concept", "required_condition", "actual_value", "status"],
+              "properties": {
+                "concept": { "type": "string" },
+                "required_condition": { "type": "string" },
+                "actual_value": {},
+                "status": { "type": "string" }
+              }
+            }
+          },
+          "missing_or_unmatched_criteria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["concept", "required_condition", "reason"],
+              "properties": {
+                "concept": { "type": "string" },
+                "required_condition": { "type": "string" },
+                "reason": { "type": "string" }
+              }
+            }
+          },
+          "explanation": { "type": "string" },
+          "clinician_action_prompt": { "type": ["string", "null"] },
+          "evidence_level": { "type": ["string", "null"] },
+          "recommendation_grade": { "type": ["string", "null"] },
+          "source": {
+            "type": "object",
+            "required": ["guideline", "version", "section"],
+            "properties": {
+              "guideline": { "type": "string" },
+              "version": { "type": "string" },
+              "section": { "type": "string" },
+              "page": { "type": ["string", "number", "null"] },
+              "document_reference": { "type": ["string", "null"] }
+            }
+          },
+          "manual_review_required": { "type": "boolean" },
+          "verification_status": {
+            "type": "string",
+            "enum": ["verified_source", "unverified_source", "draft"]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

@@ -1,0 +1,39 @@
+{
+  "patient_id": "SCENARIO_A_LUMINAL_A",
+  "source_dataset": "TCIA_BREAST_DIAGNOSIS",
+  "source_patient_id": "BreastDX-01-0002",
+  "profile_generation_timestamp": "2026-11-15T14:03:44.644958+00:00",
+  "demographics": {
+    "age": 54.0,
+    "menopausal_status": "postmenopausal",
+    "race_ethnicity": null,
+    "status": "documented"
+  },
+  "clinical_extent": {
+    "laterality": "right",
+    "primary_tumor_size_mm": 16.0,
+    "clinical_t_stage": "cT1c",
+    "clinical_n_stage": "cN0",
+    "clinical_m_stage": "cM0",
+    "status": "documented"
+  },
+  "pathology_biomarkers": {
+    "histologic_type": "invasive_ductal_carcinoma",
+    "histologic_grade": null,
+    "er_status": "positive",
+    "er_percentage": 80.0,
+    "er_low_flag": false,
+    "pr_status": "positive",
+    "pr_percentage": 65.0,
+    "her2_status": "negative",
+    "her2_ihc_score": "0",
+    "her2_fish_ratio": null,
+    "her2_fish_status": null,
+    "ki67_index": 12.0,
+    "molecular_subtype": "luminal_a",
+    "status": "documented"
+  },
+  "clinical_timepoints": [],
+  "observations": [],
+  "review_flags": []
+}
