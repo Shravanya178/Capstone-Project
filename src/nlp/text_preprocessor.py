@@ -110,10 +110,10 @@ class ClinicalTextPreprocessor:
         window_start = max(0, target_pos - 100)
         prefix = sent_lower[window_start:target_pos]
 
-        # Check for boundary conjunctions that cancel prior negation
-        boundary_match = re.search(r"\b(but|however|although|whereas|nevertheless)\b", prefix)
-        if boundary_match:
-            prefix = prefix[boundary_match.end():]
+        # Check for boundary conjunctions or clause delimiters that cancel prior negation/hedging
+        delimiters = [m.end() for m in re.finditer(r"(\b(but|however|although|whereas|nevertheless)\b|[.;\n]|\s+-\s+)", prefix)]
+        if delimiters:
+            prefix = prefix[max(delimiters):]
 
         # Evaluate negation
         is_negated = False

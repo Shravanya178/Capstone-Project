@@ -93,3 +93,30 @@ def test_evaluation_harness_metrics():
     assert metrics["overall"]["precision"] == 1.0
     assert metrics["overall"]["recall"] == 1.0
     assert metrics["overall"]["f1_score"] == 1.0
+
+
+def test_bio_clinicalbert_finetuned_extractor():
+    """Verifies that BioClinicalBERTExtractor loads fine-tuned weights and classifies clinical text."""
+    from src.nlp.bio_clinicalbert_extractor import BioClinicalBERTExtractor
+
+    extractor = BioClinicalBERTExtractor(load_weights=True)
+    assert extractor.is_initialized is True
+    assert extractor.is_finetuned is True
+
+    test_text = (
+        "FINAL PATHOLOGY: Invasive ductal carcinoma of the right breast, Nottingham grade 3. "
+        "Estrogen receptor: positive (95%). HER2/neu: negative (1+)."
+    )
+    obs = extractor.extract_from_text(test_text, report_id="TEST_CASE_BRCA")
+    assert len(obs) > 0
+
+    # Ensure fine-tuned method is recorded
+    for o in obs:
+        assert o["extraction"]["method"] == "nlp_bio_clinicalbert_finetuned"
+        assert o["extraction"]["confidence"] >= 0.50
+
+    # Check that ER is recognized as positive
+    er_items = [o for o in obs if o["concept"] == "er_status"]
+    assert len(er_items) > 0
+    assert er_items[0]["normalized_value"] == "positive"
+    assert er_items[0]["extra_metadata"]["bio_clinicalbert_class"] == "ER_POSITIVE"

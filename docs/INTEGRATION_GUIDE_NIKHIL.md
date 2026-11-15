@@ -43,3 +43,4 @@ Group observations visually across tabs or horizontal timeline nodes:
 3. `pre_surgical_resection`: Pre-operative imaging.
 4. `post_treatment_resection`: Surgical resection pathology (residual tumor bed, residual cellularity).
 5. `outcome`: Trial outcome endpoints (`PCR`, `RCBClass`).
+

@@ -28,3 +28,4 @@ The testing framework uses `pytest` and verifies every module from ingestion and
 4. **DICOM SR Conformance**: Verified recursive ContentSequence tree walking and standard UCUM unit extraction under SOP Class `1.2.840.10008.5.1.4.1.1.88.33`.
 5. **Clinical Abbreviation Preservation**: Verified that sentence segmentation does not break on decimal dimensions (`2.5 cm`) or medical abbreviations (`Dr.`, `approx.`, `ca.`).
 6. **Compound Measurements**: Verified robust handling of multi-focal tumor sizes (`'4.5,1'`) and inequalities (`'<1'`) in BreastPathQ.
+

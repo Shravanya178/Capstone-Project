@@ -82,3 +82,23 @@
   - Created `docs/INTEGRATION_GUIDE_SANKET.md`, `docs/INTEGRATION_GUIDE_NIKHIL.md`, and `docs/TESTING_AND_VALIDATION.md`.
   - Verified end-to-end integration tests in `tests/integration/test_end_to_end.py` (100% pass rate).
   - Executed master test suite: **28 of 28 tests passing**.
+
+## Phase 8: Supervised Bio_ClinicalBERT Fine-Tuning & Master Audit (2026-11-15)
+- **Training Data Preparation (`src/nlp/prepare_finetuning_data.py`)**:
+  - Mined 3,492 clinical observation examples across 920 unique patients from TCGA-BRCA, TCIA MRI narrative impressions, and BreastPathQ notes.
+  - Formulated 12-class breast oncology taxonomy.
+  - Implemented strict patient-level partition: 2,740 Train (736 patients), 345 Val (92 patients), 407 Test (92 patients). Zero patient leakage.
+- **Supervised Training (`src/nlp/train_bio_clinicalbert.py`)**:
+  - Fine-tuned top 3 layers and classification head of `emilyalsentzer/Bio_ClinicalBERT` using AdamW on `D:` drive (`D:\hf_cache`).
+  - Saved model checkpoints to `models_cache/bio_clinicalbert_brca`.
+  - Validation Accuracy reached **99.13%**, Validation Loss dropped to **0.0549**, Validation Macro F1 reached **0.8741**.
+- **Held-Out Test Cohort Evaluation**:
+  - Test Accuracy: **99.75%** (406/407 correct predictions).
+  - Weighted Macro F1: **0.9973**, Unweighted Macro F1: **0.9784**.
+  - All metrics logged to `models_cache/bio_clinicalbert_brca/training_and_evaluation_metrics.json` and `docs/NLP_EVALUATION.md`.
+- **Model Wiring (`src/nlp/bio_clinicalbert_extractor.py`)**:
+  - Wired fine-tuned classification weights into extraction inference pass, producing `nlp_bio_clinicalbert_finetuned` extraction records with model posterior probabilities.
+- **Master Test Suite Execution**:
+  - `py -3.10 -m pytest tests/ -v`: **29 of 29 passed in 9.68s** (100% pass rate).
+- **Final Audit Report**:
+  - Documented requirement-by-requirement audit, gap analysis, and scientific safeguards in `docs/FINAL_AUDIT_SHRAVANYA.md`.

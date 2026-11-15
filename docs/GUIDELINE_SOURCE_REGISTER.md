@@ -20,3 +20,4 @@
 | `ESMO-BC-2024-HR-ENDO-003` | ESMO Early Breast Cancer | Section 4.4.1, p. 1208 | Level I, Grade A | Adjuvant endocrine therapy (Tamoxifen / AI ± OFS) in HR+ EBC |
 | `ESMO-BC-2024-TNBC-NEOADJ-004` | ESMO Early Breast Cancer | Section 4.2.1, p. 1202 | Level I, Grade A | Neoadjuvant sequential anthracycline/taxane in TNBC (cT >= 2 or N+) |
 | `ASCO-CAP-2018-HER2-REFLEX-005` | ASCO/CAP HER2 Testing | Table 1, p. 2108 | Level I, Grade A | Mandatory reflex ISH/FISH for equivocal HER2 IHC 2+ |
+

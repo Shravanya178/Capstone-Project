@@ -51,3 +51,10 @@
 ### LIM-007: Sandbox Network Isolation & Dependency Management
 - **Finding**: Sandbox mode prevents network connections for `pip install`. `pydicom` is required for DICOM SR parsing in Phase 3.
 - **Mitigation**: When entering Phase 3, run package installation outside the sandbox with user approval or verify pre-cached wheels.
+
+---
+
+### LIM-008: ACRIN-FLT-Breast Contains Exclusively PET Image Slices, Not DICOM SR
+- **Finding**: Direct audit of all 2,610 `.dcm` files in `acrin_flt_breast` confirmed that all files are Positron Emission Tomography image slices (`Modality=PT`, SOP Class `1.2.840.10008.5.1.4.1.1.128`), representing volumetric pixel matrices rather than DICOM Structured Reports (`Modality=SR`, SOP Class `1.2.840.10008.5.1.4.1.1.88.33`).
+- **Impact**: Full end-to-end execution of the DICOM SR parser on genuine hospital-produced SR files is currently blocked until a genuine DICOM SR dataset is uploaded.
+- **Mitigation**: `src/dicom_sr/parser.py` is fully implemented following DICOM Part 3 / PS 3.3 standards (recursive ContentSequence walker, CODE/NUM/TEXT decoders, UCUM units, and SNOMED concept mapper) and thoroughly tested against standards-compliant synthetic DICOM SR fixtures. Furthermore, the parser strictly verifies modality, correctly rejecting non-SR modalities (`PT`) with clear exceptions.

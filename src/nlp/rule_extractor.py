@@ -49,7 +49,7 @@ class ClinicalRuleExtractor:
                 elif "low" in raw_val or (pct is not None and 1.0 <= pct <= 10.0):
                     norm_val = "er_low"
                     er_low = True
-                elif "equivocal" in raw_val or context["is_uncertain"]:
+                elif "equivocal" in raw_val or "borderline" in raw_val or (context["is_uncertain"] and raw_val not in {"pos", "positive", "+"}):
                     norm_val = "equivocal"
                     er_low = None
                 else:
@@ -94,7 +94,7 @@ class ClinicalRuleExtractor:
 
                 if context["is_negated"] or raw_val in {"neg", "negative", "-"}:
                     norm_val = "negative"
-                elif "equivocal" in raw_val or context["is_uncertain"]:
+                elif "equivocal" in raw_val or "borderline" in raw_val or (context["is_uncertain"] and raw_val not in {"pos", "positive", "+"}):
                     norm_val = "equivocal"
                 else:
                     norm_val = "positive"
@@ -202,9 +202,14 @@ class ClinicalRuleExtractor:
             )
             if grade_match:
                 g_str = grade_match.group(0).lower()
-                norm_g = "grade_1" if ("1" in g_str or "well" in g_str) else (
-                    "grade_2" if ("2" in g_str or "moderately" in g_str) else "grade_3"
-                )
+                if "iii" in g_str or "3" in g_str or "poorly" in g_str:
+                    norm_g = "grade_3"
+                elif "ii" in g_str or "2" in g_str or "moderately" in g_str:
+                    norm_g = "grade_2"
+                elif "i" in g_str or "1" in g_str or "well" in g_str:
+                    norm_g = "grade_1"
+                else:
+                    norm_g = "grade_3"
                 observations.append({
                     "observation_id": str(uuid.uuid4()),
                     "concept": "histologic_grade",

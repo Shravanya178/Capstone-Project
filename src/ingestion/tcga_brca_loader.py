@@ -50,30 +50,35 @@ class TCGABRCALoader:
 
     def load(self) -> pd.DataFrame:
         """Loads and filters the exact TCGA-BRCA cohort."""
-        self.raw_df = pd.read_csv(self.file_path)
+        import csv
+        brca_rows = []
+        total_raw = 0
+        with open(self.file_path, "r", encoding="utf-8", errors="replace") as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            for row in reader:
+                total_raw += 1
+                if not row:
+                    continue
+                filename = row[0]
+                text = row[1] if len(row) > 1 else ""
+                patient_id, tss = self.extract_tss_and_patient(filename)
+                if tss in self.BRCA_TSS_CODES or patient_id in self.ADDITIONAL_VERIFIED_BRCA_PATIENTS:
+                    brca_rows.append({
+                        "patient_filename": filename,
+                        "patient_id": patient_id,
+                        "tss_code": tss,
+                        "text": text,
+                        "source_dataset": self.DATASET_NAME
+                    })
 
-        if "patient_filename" not in self.raw_df.columns or "text" not in self.raw_df.columns:
-            raise ValueError(f"Expected columns ['patient_filename', 'text'] in {self.file_path}")
-
-        # Extract patient ID and TSS code
-        extracted = self.raw_df["patient_filename"].apply(self.extract_tss_and_patient)
-        self.raw_df["patient_id"] = [p[0] for p in extracted]
-        self.raw_df["tss_code"] = [p[1] for p in extracted]
-
-        # Filter TCGA-BRCA reports
-        is_brca_tss = self.raw_df["tss_code"].isin(self.BRCA_TSS_CODES)
-        is_additional_brca = self.raw_df["patient_id"].isin(self.ADDITIONAL_VERIFIED_BRCA_PATIENTS)
-        brca_mask = is_brca_tss | is_additional_brca
-
-        self.brca_df = self.raw_df[brca_mask].copy().reset_index(drop=True)
-        self.brca_df["source_dataset"] = self.DATASET_NAME
-
+        self.brca_df = pd.DataFrame(brca_rows)
         report_count = len(self.brca_df)
         patient_count = int(self.brca_df["patient_id"].nunique())
 
         self.ingestion_report = {
             "source_file": self.file_path,
-            "total_raw_reports": len(self.raw_df),
+            "total_raw_reports": total_raw,
             "brca_reports_filtered": report_count,
             "unique_brca_patients": patient_count,
             "expected_count": self.EXPECTED_REPORT_COUNT,
