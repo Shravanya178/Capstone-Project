@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/safety_assessment.schema.json",
+  "title": "ClinicalSafetyAssessment",
+  "description": "Standardized clinical safety and contraindication assessment schema for oncology decision support.",
+  "type": "object",
+  "required": [
+    "patient_id",
+    "assessment_timestamp",
+    "upstream_profile_version",
+    "overall_safety_status",
+    "manual_review_required",
+    "safety_findings",
+    "organ_function_assessments",
+    "missing_safety_information",
+    "dataset_limitations"
+  ],
+  "properties": {
+    "patient_id": {
+      "type": "string",
+      "description": "Canonical patient identifier matching upstream patient_profile.json."
+    },
+    "assessment_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of safety assessment execution."
+    },
+    "upstream_profile_version": {
+      "type": "string",
+      "description": "Version identifier or timestamp of input patient profile."
+    },
+    "overall_safety_status": {
+      "type": "string",
+      "enum": [
+        "no_identified_issue_in_available_data",
+        "precaution_identified",
+        "contraindication_identified",
+        "potential_interaction",
+        "insufficient_information",
+        "conflicting_information",
+        "requires_clinician_review"
+      ],
+      "description": "Decision-support safety classification. 'no_identified_issue_in_available_data' does NOT imply absolute safety, only absence of detected contraindications in available records."
+    },
+    "manual_review_required": {
+      "type": "boolean",
+      "description": "Mandatory clinician review gate before any treatment action."
+    },
+    "safety_findings": {
+      "type": "array",
+      "description": "Itemized medication-specific and organ-specific safety findings.",
+      "items": {
+        "type": "object",
+        "required": [
+          "finding_id",
+          "medication_or_class",
+          "safety_category",
+          "severity",
+          "triggering_condition",
+          "explanation",
+          "clinician_recommendation",
+          "evidence_source"
+        ],
+        "properties": {
+          "finding_id": {
+            "type": "string"
+          },
+          "medication_or_class": {
+            "type": "string"
+          },
+          "safety_category": {
+            "type": "string",
+            "enum": [
+              "absolute_contraindication",
+              "relative_contraindication",
+              "black_box_warning",
+              "precaution",
+              "drug_interaction",
+              "organ_toxicity_risk",
+              "monitoring_requirement"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "moderate", "low", "informational"]
+          },
+          "triggering_condition": {
+            "type": "string"
+          },
+          "actual_patient_value": {},
+          "threshold_or_criteria": {
+            "type": "string"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "clinician_recommendation": {
+            "type": "string"
+          },
+          "evidence_source": {
+            "type": "object",
+            "required": ["source_name", "version", "section", "reference"],
+            "properties": {
+              "source_name": { "type": "string" },
+              "version": { "type": "string" },
+              "section": { "type": "string" },
+              "reference": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed_contraindication",
+              "precaution_noted",
+              "requires_monitoring",
+              "unverified_adverse_event",
+              "potential_interaction"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "organ_function_assessments": {
+      "type": "object",
+      "required": ["cardiac", "renal", "hepatic", "hematologic", "reproductive"],
+      "properties": {
+        "cardiac": {
+          "type": "object",
+          "required": ["status", "risk_level", "notes"],
+          "properties": {
+            "status": { "type": "string", "enum": ["documented", "not_reported", "abnormal", "normal", "unknown"] },
+            "lvef_percent": { "type": ["number", "null"] },
+            "risk_level": { "type": "string", "enum": ["low", "moderate", "high", "critical", "unknown"] },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "renal": {
+          "type": "object",
+          "required": ["status", "risk_level", "notes"],
+          "properties": {
+            "status": { "type": "string", "enum": ["documented", "not_reported", "abnormal", "normal", "unknown"] },
+            "egfr_or_crcl": { "type": ["number", "null"] },
+            "risk_level": { "type": "string", "enum": ["low", "moderate", "high", "critical", "unknown"] },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "hepatic": {
+          "type": "object",
+          "required": ["status", "risk_level", "notes"],
+          "properties": {
+            "status": { "type": "string", "enum": ["documented", "not_reported", "abnormal", "normal", "unknown"] },
+            "bilirubin_ast_alt": { "type": ["string", "null"] },
+            "risk_level": { "type": "string", "enum": ["low", "moderate", "high", "critical", "unknown"] },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "hematologic": {
+          "type": "object",
+          "required": ["status", "risk_level", "notes"],
+          "properties": {
+            "status": { "type": "string", "enum": ["documented", "not_reported", "abnormal", "normal", "unknown"] },
+            "anc": { "type": ["number", "null"] },
+            "platelets": { "type": ["number", "null"] },
+            "risk_level": { "type": "string", "enum": ["low", "moderate", "high", "critical", "unknown"] },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "reproductive": {
+          "type": "object",
+          "required": ["status", "menopausal_status", "pregnancy_status", "notes"],
+          "properties": {
+            "status": { "type": "string", "enum": ["documented", "not_reported", "unknown"] },
+            "menopausal_status": { "type": "string", "enum": ["premenopausal", "perimenopausal", "postmenopausal", "unknown", "not_reported"] },
+            "pregnancy_status": { "type": "string", "enum": ["negative", "positive", "not_reported", "unknown", "not_applicable"] },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "missing_safety_information": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicit list of unrecorded clinical variables required for comprehensive safety evaluation."
+    },
+    "dataset_limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Documented provenance limitations of the source dataset regarding safety data."
+    }
+  },
+  "additionalProperties": false
+}

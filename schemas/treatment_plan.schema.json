@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/treatment_plan.schema.json",
+  "title": "ClinicalTreatmentPlan",
+  "description": "Standardized explainable decision-support treatment options schema for multidisciplinary oncology review.",
+  "type": "object",
+  "required": [
+    "patient_id",
+    "plan_timestamp",
+    "upstream_profile_version",
+    "plan_status",
+    "manual_review_required",
+    "clinical_context_summary",
+    "treatment_options",
+    "supporting_guideline_checks",
+    "safety_findings_summary",
+    "missing_information",
+    "explanation",
+    "limitations"
+  ],
+  "properties": {
+    "patient_id": {
+      "type": "string",
+      "description": "Canonical patient identifier matching upstream patient_profile.json."
+    },
+    "plan_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of treatment plan formulation."
+    },
+    "upstream_profile_version": {
+      "type": "string",
+      "description": "Version identifier or timestamp of input patient profile."
+    },
+    "plan_status": {
+      "type": "string",
+      "enum": [
+        "supported_for_consideration",
+        "requires_clinician_review",
+        "insufficient_information",
+        "contraindication_flagged",
+        "no_treatment_options_supported"
+      ],
+      "description": "Decision-support status of treatment options. All recommendations require multidisciplinary tumor board confirmation."
+    },
+    "manual_review_required": {
+      "type": "boolean",
+      "description": "Mandatory clinician review gate before any treatment action."
+    },
+    "clinical_context_summary": {
+      "type": "object",
+      "required": ["anatomic_stage", "molecular_subtype", "menopausal_status", "primary_tumor_size_mm", "nodal_status"],
+      "properties": {
+        "anatomic_stage": { "type": ["string", "null"] },
+        "molecular_subtype": { "type": ["string", "null"] },
+        "menopausal_status": { "type": "string" },
+        "primary_tumor_size_mm": { "type": ["number", "null"] },
+        "nodal_status": { "type": ["string", "null"] },
+        "histologic_grade": { "type": ["string", "null"] },
+        "histologic_type": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "treatment_options": {
+      "type": "array",
+      "description": "Itemized evidence-supported treatment options for multidisciplinary team consideration.",
+      "items": {
+        "type": "object",
+        "required": [
+          "treatment_option_id",
+          "treatment_category",
+          "regimen_or_modality",
+          "clinical_intent",
+          "eligibility_status",
+          "supporting_observations",
+          "supporting_guideline_rules",
+          "safety_findings",
+          "missing_information",
+          "rationale",
+          "clinician_action_prompts",
+          "evidence_source",
+          "manual_review_required"
+        ],
+        "properties": {
+          "treatment_option_id": { "type": "string" },
+          "treatment_category": {
+            "type": "string",
+            "enum": [
+              "neoadjuvant_systemic_therapy",
+              "surgical_intervention",
+              "adjuvant_systemic_therapy",
+              "locoregional_radiation_therapy",
+              "endocrine_therapy",
+              "targeted_biotherapy",
+              "supportive_bone_modifying_agent"
+            ]
+          },
+          "regimen_or_modality": { "type": "string" },
+          "clinical_intent": {
+            "type": "string",
+            "enum": ["curative_neoadjuvant", "curative_adjuvant", "locoregional_control", "palliative"]
+          },
+          "eligibility_status": {
+            "type": "string",
+            "enum": [
+              "supported_for_consideration",
+              "not_supported_by_available_information",
+              "insufficient_information",
+              "requires_clinician_review",
+              "contraindication_flagged"
+            ]
+          },
+          "supporting_observations": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "supporting_guideline_rules": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "safety_findings": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "missing_information": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "rationale": { "type": "string" },
+          "clinician_action_prompts": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "evidence_source": {
+            "type": "object",
+            "required": ["guideline_name", "version", "section", "reference", "evidence_level", "recommendation_grade"],
+            "properties": {
+              "guideline_name": { "type": "string" },
+              "version": { "type": "string" },
+              "section": { "type": "string" },
+              "page": { "type": ["string", "null"] },
+              "reference": { "type": "string" },
+              "evidence_level": { "type": "string" },
+              "recommendation_grade": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
+          "manual_review_required": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "supporting_guideline_checks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of rule IDs from Shravanya's guideline check evaluations."
+    },
+    "safety_findings_summary": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "High-level summary of active safety findings or precautions from the safety engine."
+    },
+    "missing_information": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Clinical parameters missing for complete multidisciplinary treatment planning."
+    },
+    "explanation": {
+      "type": "string",
+      "description": "Comprehensive natural language clinical rationale explaining all treatment options and safety constraints."
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "System and data limitations affecting treatment planning."
+    }
+  },
+  "additionalProperties": false
+}

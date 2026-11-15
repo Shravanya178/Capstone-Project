@@ -1,0 +1,251 @@
+{
+  "patient_id": "SCENARIO_A_LUMINAL_A",
+  "plan_timestamp": "2026-11-15T15:04:01.769942+00:00",
+  "upstream_profile_version": "2026-11-15T14:03:44.644958+00:00",
+  "plan_status": "supported_for_consideration",
+  "manual_review_required": true,
+  "clinical_context_summary": {
+    "anatomic_stage": "cT1c",
+    "molecular_subtype": "luminal_a",
+    "menopausal_status": "postmenopausal",
+    "primary_tumor_size_mm": 16.0,
+    "nodal_status": "cN0",
+    "histologic_grade": null,
+    "histologic_type": "invasive_ductal_carcinoma"
+  },
+  "treatment_options": [
+    {
+      "treatment_option_id": "OPT-SURG-BCS-001",
+      "treatment_category": "surgical_intervention",
+      "regimen_or_modality": "Breast-Conserving Surgery (Partial Mastectomy / Lumpectomy) + SLNB",
+      "clinical_intent": "locoregional_control",
+      "eligibility_status": "supported_for_consideration",
+      "supporting_observations": [
+        "Primary tumor size: 16.0 mm (<= 50 mm, favorable for breast preservation)"
+      ],
+      "supporting_guideline_rules": [
+        "ESMO-BC-2024-SURGERY-LOCOREGIONAL"
+      ],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Supported for consideration based on patient biomarker profile and guideline consensus. Modality intent: locoregional control.",
+      "clinician_action_prompts": [
+        "Discuss breast-conserving surgery vs mastectomy with patient; evaluate cosmetic feasibility and surgical margins."
+      ],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 3.1 (Locoregional Surgical Management)",
+        "page": "1198",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    },
+    {
+      "treatment_option_id": "OPT-SURG-MASTECTOMY-002",
+      "treatment_category": "surgical_intervention",
+      "regimen_or_modality": "Total / Simple Mastectomy with SLNB (or ALND if gross nodal disease)",
+      "clinical_intent": "locoregional_control",
+      "eligibility_status": "supported_for_consideration",
+      "supporting_observations": [],
+      "supporting_guideline_rules": [
+        "ESMO-BC-2024-SURGERY-LOCOREGIONAL"
+      ],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Supported for consideration based on patient biomarker profile and guideline consensus. Modality intent: locoregional control.",
+      "clinician_action_prompts": [
+        "Mastectomy option available based on patient preference or multicentric disease."
+      ],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 3.1 (Locoregional Surgical Management)",
+        "page": "1198",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    },
+    {
+      "treatment_option_id": "OPT-RT-WHOLE-BREAST-003",
+      "treatment_category": "locoregional_radiation_therapy",
+      "regimen_or_modality": "Moderately Hypofractionated Whole Breast Radiotherapy (WBRT)",
+      "clinical_intent": "locoregional_control",
+      "eligibility_status": "supported_for_consideration",
+      "supporting_observations": [
+        "Mandatory adjuvant standard of care following breast-conserving surgery"
+      ],
+      "supporting_guideline_rules": [
+        "ESMO-BC-2024-RADIOTHERAPY-WBRT"
+      ],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Supported for consideration based on patient biomarker profile and guideline consensus. Modality intent: locoregional control.",
+      "clinician_action_prompts": [
+        "Refer to radiation oncology following definitive breast-conserving surgery."
+      ],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 3.2 (Locoregional Radiation Therapy)",
+        "page": "1200",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    },
+    {
+      "treatment_option_id": "OPT-NEOADJ-HER2-DUAL-004",
+      "treatment_category": "neoadjuvant_systemic_therapy",
+      "regimen_or_modality": "Docetaxel + Carboplatin + Trastuzumab + Pertuzumab (TCHP x 6 cycles)",
+      "clinical_intent": "curative_neoadjuvant",
+      "eligibility_status": "not_supported_by_available_information",
+      "supporting_observations": [],
+      "supporting_guideline_rules": [],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Not supported by currently available clinical stage or biomarker findings.",
+      "clinician_action_prompts": [],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 4.2.2 (Neoadjuvant Therapy: HER2-Positive)",
+        "page": "1203",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    },
+    {
+      "treatment_option_id": "OPT-NEOADJ-TNBC-KEYNOTE-005",
+      "treatment_category": "neoadjuvant_systemic_therapy",
+      "regimen_or_modality": "Pembrolizumab + Carboplatin + Paclitaxel, followed by Doxorubicin + Cyclophosphamide (Keynote-522)",
+      "clinical_intent": "curative_neoadjuvant",
+      "eligibility_status": "not_supported_by_available_information",
+      "supporting_observations": [],
+      "supporting_guideline_rules": [],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Not supported by currently available clinical stage or biomarker findings.",
+      "clinician_action_prompts": [],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 4.2.1 (Neoadjuvant Therapy: Triple-Negative Breast Cancer)",
+        "page": "1202",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    },
+    {
+      "treatment_option_id": "OPT-ADJ-HER2-TRASTUZUMAB-006",
+      "treatment_category": "targeted_biotherapy",
+      "regimen_or_modality": "Adjuvant Trastuzumab (every 3 weeks to complete 1 full year)",
+      "clinical_intent": "curative_adjuvant",
+      "eligibility_status": "not_supported_by_available_information",
+      "supporting_observations": [],
+      "supporting_guideline_rules": [],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Not supported by currently available clinical stage or biomarker findings.",
+      "clinician_action_prompts": [],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 4.3.1 (Adjuvant Targeted Therapy: Trastuzumab)",
+        "page": "1205",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    },
+    {
+      "treatment_option_id": "OPT-ADJ-ENDO-AI-007",
+      "treatment_category": "endocrine_therapy",
+      "regimen_or_modality": "Aromatase Inhibitor (Anastrozole 1 mg daily or Letrozole 2.5 mg daily for 5-10 years)",
+      "clinical_intent": "curative_adjuvant",
+      "eligibility_status": "supported_for_consideration",
+      "supporting_observations": [
+        "Estrogen Receptor-positive biomarker status",
+        "Postmenopausal ovarian status (preferred indication for AIs)"
+      ],
+      "supporting_guideline_rules": [
+        "ESMO-BC-2024-HR-ENDO-003"
+      ],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Supported for consideration based on patient biomarker profile and guideline consensus. Modality intent: curative adjuvant.",
+      "clinician_action_prompts": [
+        "Initiate Aromatase Inhibitor (Letrozole / Anastrozole); order baseline DEXA bone mineral density scan."
+      ],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 4.4.1 (Adjuvant Endocrine Therapy: Postmenopausal)",
+        "page": "1208",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    },
+    {
+      "treatment_option_id": "OPT-ADJ-ENDO-TAMOXIFEN-008",
+      "treatment_category": "endocrine_therapy",
+      "regimen_or_modality": "Tamoxifen (20 mg daily for 5-10 years)",
+      "clinical_intent": "curative_adjuvant",
+      "eligibility_status": "supported_for_consideration",
+      "supporting_observations": [
+        "Estrogen Receptor-positive biomarker status"
+      ],
+      "supporting_guideline_rules": [
+        "ESMO-BC-2024-HR-ENDO-003"
+      ],
+      "safety_findings": [],
+      "missing_information": [],
+      "rationale": "Supported for consideration based on patient biomarker profile and guideline consensus. Modality intent: curative adjuvant.",
+      "clinician_action_prompts": [
+        "Standard endocrine option. Screen for thromboembolic risk and potent CYP2D6-inhibiting medications."
+      ],
+      "evidence_source": {
+        "guideline_name": "ESMO Clinical Practice Guidelines for Early Breast Cancer",
+        "version": "2024 Update",
+        "section": "Section 4.4.2 (Adjuvant Endocrine Therapy: Premenopausal)",
+        "page": "1209",
+        "reference": "doi:10.1093/annonc/mdz173",
+        "evidence_level": "Level I",
+        "recommendation_grade": "Grade A"
+      },
+      "manual_review_required": true
+    }
+  ],
+  "supporting_guideline_checks": [
+    "ESMO-BC-2024-HR-ENDO-003"
+  ],
+  "safety_findings_summary": [],
+  "missing_information": [
+    "Current active medication list (to evaluate drug-drug interactions)",
+    "Documented medication and excipient allergy history",
+    "Baseline Left Ventricular Ejection Fraction (LVEF / Echocardiogram)",
+    "Documented thromboembolic history (DVT / PE / clotting disorders)",
+    "Baseline complete blood count (Absolute Neutrophil Count and Platelets)"
+  ],
+  "explanation": "MULTIDISCIPLINARY TREATMENT DECISION SUPPORT SUMMARY\nPatient Context: Luminal A | Stage cT1c | Postmenopausal\nSupported Options for Consideration: 5 modality/regimen(s).\n\nSUPPORTED MODALITIES:\n  - [SURGICAL INTERVENTION]: Breast-Conserving Surgery (Partial Mastectomy / Lumpectomy) + SLNB\n  - [SURGICAL INTERVENTION]: Total / Simple Mastectomy with SLNB (or ALND if gross nodal disease)\n  - [LOCOREGIONAL RADIATION THERAPY]: Moderately Hypofractionated Whole Breast Radiotherapy (WBRT)\n  - [ENDOCRINE THERAPY]: Aromatase Inhibitor (Anastrozole 1 mg daily or Letrozole 2.5 mg daily for 5-10 years)\n  - [ENDOCRINE THERAPY]: Tamoxifen (20 mg daily for 5-10 years)\n\nMISSING CLINICAL PARAMETERS (5):\n  - Current active medication list (to evaluate drug-drug interactions)\n  - Documented medication and excipient allergy history\n  - Baseline Left Ventricular Ejection Fraction (LVEF / Echocardiogram)\n  - Documented thromboembolic history (DVT / PE / clotting disorders)\n\nCLINICAL SAFEGUARD: This is a decision-support synthesis and does not constitute a prescription. All recommendations require multidisciplinary confirmation and patient shared decision-making.",
+  "limitations": [
+    "Treatment options reflect research guidelines (ESMO 2024, ASCO, St. Gallen 2023) and require oncologist review.",
+    "Patient preferences, detailed comorbidities, and surgical cosmetic factors must be confirmed by multidisciplinary team.",
+    "Genomic recurrence risk scores (Oncotype DX, MammaPrint) should be integrated when available for ER+ HER2- node-negative disease.",
+    "TCIA Breast-Diagnosis dataset consists of diagnostic MRI impressions and core biopsy pathology notes.",
+    "Complete outpatient medication lists, allergy records, and serial laboratory panels are not recorded in this imaging archive.",
+    "Safety assessments for this cohort reflect only documented pathology and narrative imaging findings."
+  ]
+}

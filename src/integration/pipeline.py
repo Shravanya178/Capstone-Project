@@ -2,7 +2,8 @@
 End-to-End CDSS Integration Pipeline.
 
 Orchestrates complete data ingestion, preprocessing, normalization, canonical
-patient profile generation, and deterministic clinical guideline checking.
+patient profile generation, deterministic clinical guideline checking,
+comprehensive clinical safety evaluation, and evidence-based treatment planning.
 """
 
 from typing import Dict, Any, List, Optional
@@ -15,15 +16,51 @@ from src.ingestion.breastpathq_loader import BreastPathQLoader
 from src.ingestion.tcga_brca_loader import TCGABRCALoader
 from src.patient_profile.generator import PatientProfileGenerator
 from src.guidelines.evaluator import GuidelineEvaluator
+from src.safety.safety_engine import SafetyEngine
+from src.treatment.treatment_engine import TreatmentEngine
 
 
 class CDSSPipeline:
-    """Master pipeline orchestrator for Shravanya's modules."""
+    """Master pipeline orchestrator connecting Shravanya and Sanket modules."""
 
-    def __init__(self, workspace_dir: Optional[str] = None):
+    def __init__(self, workspace_dir: Optional[str] = None, validate_schemas: bool = True):
         self.workspace_dir = workspace_dir or os.getcwd()
-        self.profile_generator = PatientProfileGenerator(validate_schema=True)
-        self.guideline_evaluator = GuidelineEvaluator(validate_schema=True)
+        self.profile_generator = PatientProfileGenerator(validate_schema=validate_schemas)
+        self.guideline_evaluator = GuidelineEvaluator(validate_schema=validate_schemas)
+        self.safety_engine = SafetyEngine(validate_schema=validate_schemas)
+        self.treatment_engine = TreatmentEngine(validate_schema=validate_schemas)
+
+    def process_patient_profile(
+        self,
+        patient_profile: Dict[str, Any],
+        candidate_medications: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Executes guideline evaluation, clinical safety assessment, and treatment
+        planning for any canonical patient profile.
+        """
+        # 1. Guideline check (Shravanya)
+        guideline_check = self.guideline_evaluator.evaluate_profile(patient_profile)
+
+        # 2. Safety evaluation (Sanket)
+        safety_assessment = self.safety_engine.evaluate_patient_safety(
+            patient_profile=patient_profile,
+            candidate_medications=candidate_medications,
+        )
+
+        # 3. Treatment plan synthesis (Sanket)
+        treatment_plan = self.treatment_engine.generate_treatment_plan(
+            patient_profile=patient_profile,
+            guideline_checks=guideline_check,
+            safety_assessment=safety_assessment,
+        )
+
+        return {
+            "patient_profile": patient_profile,
+            "guideline_check": guideline_check,
+            "safety_assessment": safety_assessment,
+            "treatment_plan": treatment_plan,
+        }
 
     def process_tcia_patient(self, patient_col_index: int = 2) -> Dict[str, Any]:
         """Loads TCIA clinical workbook and processes a specified patient column."""
@@ -52,13 +89,7 @@ class CDSSPipeline:
             ki67_raw=pat_row["ki67_raw"],
         )
 
-        # Run Guideline Evaluation
-        guideline_results = self.guideline_evaluator.evaluate_profile(profile)
-
-        return {
-            "patient_profile": profile,
-            "guideline_check": guideline_results,
-        }
+        return self.process_patient_profile(profile)
 
     def process_ispy1_patient(self, row_index: int = 0) -> Dict[str, Any]:
         """Loads I-SPY-1 clinical trial data and processes a patient row."""
@@ -86,15 +117,11 @@ class CDSSPipeline:
             her2_raw=row.get("Her2MostPos"),
         )
 
-        guideline_results = self.guideline_evaluator.evaluate_profile(profile)
-
-        return {
-            "patient_profile": profile,
-            "guideline_check": guideline_results,
-        }
+        return self.process_patient_profile(profile)
 
 
 def pd_notna(val: Any) -> bool:
     import pandas as pd
     return pd.notna(val)
+
 

@@ -1,0 +1,53 @@
+{
+  "patient_id": "SCENARIO_A_LUMINAL_A",
+  "assessment_timestamp": "2026-11-15T15:04:01.750086+00:00",
+  "upstream_profile_version": "2026-11-15T14:03:44.644958+00:00",
+  "overall_safety_status": "insufficient_information",
+  "manual_review_required": true,
+  "safety_findings": [],
+  "organ_function_assessments": {
+    "cardiac": {
+      "status": "not_reported",
+      "lvef_percent": null,
+      "risk_level": "unknown",
+      "notes": "Baseline echocardiogram / LVEF measurement not recorded in available dataset records."
+    },
+    "renal": {
+      "status": "not_reported",
+      "egfr_or_crcl": null,
+      "risk_level": "unknown",
+      "notes": "Serum creatinine / estimated GFR not recorded in available dataset records."
+    },
+    "hepatic": {
+      "status": "not_reported",
+      "bilirubin_ast_alt": null,
+      "risk_level": "unknown",
+      "notes": "Hepatic enzyme panel (total bilirubin, AST, ALT) not recorded in available dataset records."
+    },
+    "hematologic": {
+      "status": "not_reported",
+      "anc": null,
+      "platelets": null,
+      "risk_level": "unknown",
+      "notes": "Complete blood count (ANC, Platelets) not recorded in available dataset records."
+    },
+    "reproductive": {
+      "status": "documented",
+      "menopausal_status": "postmenopausal",
+      "pregnancy_status": "not_applicable",
+      "notes": "Postmenopausal patient. Candidate for aromatase inhibitor therapy; pregnancy not applicable."
+    }
+  },
+  "missing_safety_information": [
+    "Current active medication list (to evaluate drug-drug interactions)",
+    "Documented medication and excipient allergy history",
+    "Baseline Left Ventricular Ejection Fraction (LVEF / Echocardiogram)",
+    "Documented thromboembolic history (DVT / PE / clotting disorders)",
+    "Baseline complete blood count (Absolute Neutrophil Count and Platelets)"
+  ],
+  "dataset_limitations": [
+    "TCIA Breast-Diagnosis dataset consists of diagnostic MRI impressions and core biopsy pathology notes.",
+    "Complete outpatient medication lists, allergy records, and serial laboratory panels are not recorded in this imaging archive.",
+    "Safety assessments for this cohort reflect only documented pathology and narrative imaging findings."
+  ]
+}
