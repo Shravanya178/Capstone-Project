@@ -113,3 +113,4 @@ Sanket's reasoning engine enforces an explicit override hierarchy:
   - Adjuvant Trastuzumab eligibility status is **overridden** from `supported_for_consideration` $\rightarrow$ `contraindication_flagged`.
   - Clinician action prompt: *"CONTRAINDICATION: Withhold HER2-targeted monoclonal antibodies. Repeat echocardiogram in 4 weeks. Refer to cardio-oncology."*
   - Verified by automated unit test `test_cardiotoxicity_safety_override` in `tests/treatment/test_treatment_engine.py`.
+

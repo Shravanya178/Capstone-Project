@@ -60,3 +60,4 @@ class TreatmentExplanationGenerator:
         )
 
         return "\n".join(lines)
+

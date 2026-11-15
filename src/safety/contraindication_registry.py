@@ -206,3 +206,4 @@ class ContraindicationRegistry:
             if any(term in med_lower for term in r.medication_or_class.lower().split("/")):
                 matched.append(r)
         return matched
+

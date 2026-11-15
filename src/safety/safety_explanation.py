@@ -56,3 +56,4 @@ class SafetyExplanationGenerator:
                 parts.append(f"- ...and {len(missing_fields) - 4} additional unrecorded parameters.")
 
         return "\n\n".join(parts)
+

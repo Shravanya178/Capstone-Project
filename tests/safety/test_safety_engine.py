@@ -215,3 +215,4 @@ def test_missing_safety_information_tracking(base_profile):
     assert any("allergy" in m.lower() for m in missing)
     assert any("lvef" in m.lower() for m in missing)
     assert len(assessment["dataset_limitations"]) >= 1
+

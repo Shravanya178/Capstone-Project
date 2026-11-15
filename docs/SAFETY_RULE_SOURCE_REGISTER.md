@@ -82,3 +82,4 @@ This register documents all 11 evidence-based safety rules implemented in Sanket
 - **Trigger**: Active, severe systemic autoimmune disease (e.g. active ulcerative colitis, systemic lupus erythematosus, severe myasthenia gravis).
 - **Medications Affected**: Pembrolizumab.
 - **Clinical Action**: Precaution / toxicity risk. High risk of severe or fatal immune-related adverse events (irAEs: immune-mediated colitis, myocarditis, pneumonitis). Requires expert rheumatology consultation and risk-benefit evaluation.
+

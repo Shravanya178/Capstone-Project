@@ -207,3 +207,4 @@ class PatientRiskAssessor:
             "pregnancy_status": preg_status,
             "notes": notes,
         }
+

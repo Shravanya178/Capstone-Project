@@ -114,3 +114,4 @@ def test_all_sample_scenarios_schema_compliance():
 
             jsonschema.validate(safety, s_schema)
             jsonschema.validate(plan, t_schema)
+

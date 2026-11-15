@@ -78,3 +78,4 @@ Testing is executed under `pytest` with JSON Schema Draft 2020-12 validation enf
   2. Did **not** assume any variable was normal or negative.
   3. Master `SafetyEngine` set `overall_safety_status: insufficient_information` and enforced `manual_review_required: true`.
   4. Attached documented limitations explaining retrospective dataset realities.
+

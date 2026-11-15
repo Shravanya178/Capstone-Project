@@ -187,3 +187,4 @@ def test_premenopausal_ai_contraindication_override(luminal_a_profile):
     options = {o["treatment_option_id"]: o for o in plan["treatment_options"]}
     ai_opt = options["OPT-ADJ-ENDO-AI-007"]
     assert ai_opt["eligibility_status"] == "contraindication_flagged"
+

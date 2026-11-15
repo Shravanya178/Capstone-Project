@@ -159,3 +159,4 @@ To ensure explainability, every treatment option payload includes actionable cli
 ```
 
 This structure guarantees that attending oncologists and tumor board members can immediately identify *why* a regimen was considered, *why* it was flagged, and *what* clinical next steps are recommended.
+
