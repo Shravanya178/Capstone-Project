@@ -1,6 +1,6 @@
 {
   "patient_id": "SCENARIO_A_LUMINAL_A",
-  "plan_timestamp": "2026-11-15T15:04:01.769942+00:00",
+  "plan_timestamp": "2026-11-19T12:27:02.050347+00:00",
   "upstream_profile_version": "2026-11-15T14:03:44.644958+00:00",
   "plan_status": "supported_for_consideration",
   "manual_review_required": true,

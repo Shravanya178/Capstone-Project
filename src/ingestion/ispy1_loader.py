@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Shravanya Andhale, Nikhil Kadam, Sanket Patil, Khushi Shukla,
+# Asma Parveen I Siddavatam and Pradnya Karekar
 """
 I-SPY-1 / ACRIN 6657 Clinical & Outcome Data Ingestion Loader.
 

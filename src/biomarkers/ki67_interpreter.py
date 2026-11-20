@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Shravanya Andhale, Nikhil Kadam, Sanket Patil, Khushi Shukla,
+# Asma Parveen I Siddavatam and Pradnya Karekar
 """
 Ki-67 Proliferation Index Interpretation per International Ki-67 in Breast Cancer Working Group (IKWG).
 """

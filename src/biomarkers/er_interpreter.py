@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Shravanya Andhale, Nikhil Kadam, Sanket Patil, Khushi Shukla,
+# Asma Parveen I Siddavatam and Pradnya Karekar
 """
 Estrogen Receptor (ER) Clinical Interpretation per ASCO/CAP 2020 Guidelines.
 

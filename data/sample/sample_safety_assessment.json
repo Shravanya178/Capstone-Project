@@ -1,6 +1,6 @@
 {
   "patient_id": "SCENARIO_A_LUMINAL_A",
-  "assessment_timestamp": "2026-11-15T15:04:01.750086+00:00",
+  "assessment_timestamp": "2026-11-19T12:27:02.014574+00:00",
   "upstream_profile_version": "2026-11-15T14:03:44.644958+00:00",
   "overall_safety_status": "insufficient_information",
   "manual_review_required": true,
