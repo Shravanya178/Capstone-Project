@@ -123,7 +123,7 @@ class ClinicalRuleExtractor:
 
             # 3. HER2 Extraction
             her2_matches = re.finditer(
-                r"\b(?:HER2(?:\/neu)?)\s*(?::|\s+is\s+)?\s*(0|1\+|2\+|3\+|positive|negative|pos|neg|\+|-|equivocal|amplified|non-amplified)(?=\s|[.,;]|$|\b)",
+                r"\b(?:HER-?2(?:\/neu)?)\s*(?::|\s+is\s+)?\s*(?:Score\s+)?(0|1\+|2\+|3\+|positive|negative|pos|neg|\+|-|equivocal|amplified|non-amplified)(?=\s|[.,;]|$|\b)",
                 sent_text,
                 re.IGNORECASE,
             )

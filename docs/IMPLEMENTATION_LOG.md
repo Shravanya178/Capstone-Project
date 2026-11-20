@@ -150,3 +150,56 @@
   - Executed `py -3.10 -m pytest tests/ -v`: **49 of 49 tests passed in 10.33s (100% pass rate)**.
   - Executed `py -3.10 -m src.integration.smoke_test`: Verified end-to-end multi-agent execution with zero errors.
 
+---
+
+## Work Session: 2026-11-20 (Session 3 — Nikhil's UI/UX & Backend Integration Complete)
+
+### Completed Tasks
+- **Phase 13: FastAPI Integration Layer (`src/api/`)**:
+  - Implemented `src/api/service.py`: Service orchestration layer exposing `get_capabilities`, `list_sample_cases`, `get_sample_assessment`, `process_clinical_text`, and `parse_dicom_sr_file`. Robustly handles profile un-nesting and error handling.
+  - Implemented `src/api/main.py`: Production-ready FastAPI application with CORS middleware, health check, capabilities, case retrieval, text/profile assessment, spreadsheet ingestion, and DICOM SR parsing endpoints:
+    - `GET /health`
+    - `GET /api/v1/capabilities`
+    - `GET /api/v1/sample-cases`
+    - `GET /api/v1/sample-cases/{case_id}`
+    - `POST /api/v1/assessments/text`
+    - `POST /api/v1/assessments/profile`
+    - `POST /api/v1/assessments/upload`
+    - `POST /api/v1/dicom-sr/parse`
+  - Authored automated API tests: `tests/api/test_api.py` (7 tests covering health, capabilities, sample cases, Scenario A, Scenario B reflex alert, 404 handling, and raw clinical narrative evaluation).
+  - Enhanced `src/nlp/rule_extractor.py` to capture hyphenated `"HER-2/neu"` and optional `"Score "` prefixes in clinical impressions.
+
+- **Phase 14: Next.js 14 Frontend Application (`frontend/`)**:
+  - Initialized Next.js 14 application with TypeScript, App Router, and Tailwind CSS.
+  - Codified TypeScript interfaces matching JSON Schema Draft 2020-12 in `frontend/src/types/cdss.ts`.
+  - Implemented clinical color palette in `frontend/tailwind.config.ts` and `frontend/src/app/globals.css`:
+    - `#F5F6F3` (Background), `#FFFFFF` (Surface), `#24343B` (Primary text), `#68777C` (Secondary text), `#193B4A` (Primary navy), `#4E8276` (Muted teal), `#DEE5E1` (Border), `#E7F0EA` (Subtle green), `#B78643` (Warning amber), `#F6EEDC` (Warning bg), `#B54B4B` (Critical red), `#F8E9E7` (Critical bg).
+  - Built comprehensive component library:
+    - `Sidebar.tsx`: Navy left sidebar with active route indicator, system heartbeat, and clinical disclaimer.
+    - `Topbar.tsx`: Header with path breadcrumbs, quick sample case dropdown, and non-autonomous regulatory badge.
+    - `PatientHeader.tsx`: Demographics, staging summary, molecular subtype badge, and safety status indicators.
+    - `EvidenceTraceViewer.tsx`: Two-panel evidence traceability tool displaying extracted observations and exact clinical narrative character span offsets with negation/uncertainty status.
+    - `TreatmentMatrix.tsx`: Side-by-side treatment comparison canvas comparing candidate regimens across 12 clinical dimensions with category filters and strict absence of AI ranking/scoring badges.
+    - `TreatmentDrawer.tsx`: Slide-over detail drawer for treatment options with rationale and clinical action prompts.
+    - `SafetyOverview.tsx`: 5-domain organ risk status, FDA boxed warnings table, and missing safety data tracker.
+    - `BiomarkerPanel.tsx`: Receptor percentages, ER-low alerts, HER2 IHC 2+ reflex notifications, and CAP interpretation guides.
+    - `StagingPanel.tsx`: AJCC 8th Edition clinical staging breakdown with missing descriptor preservation.
+    - `GuidelinesPanel.tsx`: 5 codified ESMO 2024 / ASCO 2018 guideline checks with recommendation details.
+    - `DecisionRecordView.tsx`: Clinician review summary with JSON export and download actions.
+  - Implemented application routes:
+    - `/`: Clinical overview hub with system capabilities, disclaimer, and 5 validated patient scenarios.
+    - `/workspace`: Multi-tab clinical evaluation workspace with live case switching and slide-over drawers.
+    - `/new-assessment`: Multi-modal clinical intake (narrative text, Excel/CSV file upload, DICOM SR upload) with a 10-stage live execution progress tracker.
+    - `/evidence`: Observation taxonomy explorer and CAP checklist reference.
+    - `/decision-support`: Guideline rules catalog and dynamic safety override reference.
+    - `/system-info`: Multi-agent system architecture, cohort statistics, and technical governance specifications.
+  - Production Next.js build verification: `npm run build` compiled 10/10 static pages with zero errors.
+
+- **Phase 15: Comprehensive Integration Documentation**:
+  - Authored `docs/FRONTEND_INTEGRATION_REPORT.md`: Comprehensive UI/UX architecture, component mapping, REST endpoints, and verification benchmark report.
+
+- **Full Project Test Suite Execution**:
+  - Executed `py -3.10 -m pytest tests/ -v`: **56 of 56 tests passed in 38.95s (100% pass rate)**.
+  - Executed `npm run build`: Static routes compiled cleanly with 0 TypeScript/ESLint warnings.
+
+

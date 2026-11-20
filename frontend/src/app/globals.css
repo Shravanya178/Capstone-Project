@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --clinical-bg: #F5F6F3;
+  --clinical-surface: #FFFFFF;
+  --clinical-text: #24343B;
+  --clinical-secondary: #68777C;
+  --clinical-navy: #193B4A;
+  --clinical-teal: #4E8276;
+  --clinical-border: #DEE5E1;
+  --clinical-subtleGreen: #E7F0EA;
+  --clinical-warningAmber: #B78643;
+  --clinical-warningBg: #F6EEDC;
+  --clinical-criticalRed: #B54B4B;
+  --clinical-criticalBg: #F8E9E7;
+}
+
+body {
+  background-color: var(--clinical-bg);
+  color: var(--clinical-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar for clinical dense data tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F6F3;
+}
+::-webkit-scrollbar-thumb {
+  background: #DEE5E1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #68777C;
+}
+
+/* Tabular figures for clinical metrics and percentages */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@layer components {
+  .badge-primary {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#193B4A] text-white;
+  }
+  .badge-teal {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#E7F0EA] text-[#4E8276] border border-[#DEE5E1];
+  }
+  .badge-warning {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#F6EEDC] text-[#B78643] border border-[#DEE5E1];
+  }
+  .badge-critical {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#F8E9E7] text-[#B54B4B] border border-[#B54B4B]/30;
+  }
+  .badge-neutral {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200;
+  }
+}

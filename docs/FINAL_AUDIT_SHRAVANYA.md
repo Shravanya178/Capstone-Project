@@ -179,4 +179,3 @@ Each requirement below is audited against actual source code, test execution, an
 - **Working Tree**: Clean, verified, ready for commit and push.
 - **Model Storage**: All fine-tuned weights housed in `models_cache/bio_clinicalbert_brca` (git-ignored); HuggingFace base artifacts housed in `D:\hf_cache`.
 - **Handoff Status**: Shravanya's assigned modules are 100% production-ready for Sanket's contraindication/treatment-planning engine and Nikhil's frontend UI integration.
-
