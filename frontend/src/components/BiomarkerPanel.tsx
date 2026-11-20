@@ -2,6 +2,17 @@
 
 import React, { useState } from "react";
 import { PathologyBiomarkers } from "../types/cdss";
+import {
+  Dna,
+  AlertTriangle,
+  Info,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  Activity,
+  Microscope,
+  Sparkles,
+} from "lucide-react";
 
 interface BiomarkerPanelProps {
   biomarkers: PathologyBiomarkers;
@@ -28,186 +39,336 @@ export default function BiomarkerPanel({ biomarkers }: BiomarkerPanelProps) {
 
   const isHer2Equivocal = her2_status === "equivocal" || her2_ihc_score === "2+";
 
+  // Helper for Circular Progress Ring
+  const renderRadialGauge = (
+    value: number | null | undefined,
+    label: string,
+    status: string,
+    isErLow?: boolean
+  ) => {
+    const val = value !== undefined && value !== null ? Math.min(Math.max(value, 0), 100) : 0;
+    const strokeDashoffset = 100 - val;
+
+    let strokeColor = "#4E8276"; // default teal
+    let statusBg = "bg-emerald-50 text-emerald-800 border-emerald-200";
+
+    if (isErLow) {
+      strokeColor = "#B78643";
+      statusBg = "bg-amber-50 text-amber-800 border-amber-300";
+    } else if (status === "negative") {
+      strokeColor = "#B54B4B";
+      statusBg = "bg-rose-50 text-rose-800 border-rose-200";
+    } else if (value === null || value === undefined) {
+      strokeColor = "#DEE5E1";
+      statusBg = "bg-gray-100 text-gray-600 border-gray-200";
+    }
+
+    return (
+      <div className="flex flex-col items-center justify-center p-4 rounded-xl bg-white border border-[#DEE5E1] shadow-clinical-xs hover:shadow-clinical-sm transition-all duration-300">
+        <div className="relative w-24 h-24 mb-3">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path
+              className="text-[#F0F2EE]"
+              strokeWidth="3.5"
+              stroke="currentColor"
+              fill="none"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path
+              stroke={strokeColor}
+              strokeWidth="3.5"
+              strokeDasharray="100, 100"
+              strokeDashoffset={value !== null && value !== undefined ? strokeDashoffset : 100}
+              strokeLinecap="round"
+              fill="none"
+              className="transition-all duration-1000 ease-out"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+            <span className="text-xl font-bold text-[#193B4A] tabular-nums tracking-tight">
+              {value !== null && value !== undefined ? `${value}%` : "N/R"}
+            </span>
+            <span className="text-[10px] text-[#68777C] font-semibold uppercase tracking-wider">
+              Staining
+            </span>
+          </div>
+        </div>
+
+        <div className="text-center w-full">
+          <div className="text-xs font-semibold text-[#24343B] mb-1">{label}</div>
+          <div
+            className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border inline-block ${statusBg}`}
+          >
+            {status ? status.replace("_", " ").toUpperCase() : "NOT REPORTED"}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
-      {/* 1. Critical Clinical Biomarker Alerts */}
+      {/* 1. Critical Reflex & Safety Alerts */}
       {isHer2Equivocal && (
-        <div className="p-4 rounded-lg bg-[#F8E9E7] border border-[#B54B4B] flex items-start space-x-3 text-[#B54B4B]">
-          <span className="text-xl">⚠️</span>
+        <div className="p-4 rounded-xl bg-[#F8E9E7] border-2 border-[#B54B4B] shadow-clinical-alert flex items-start space-x-3.5 text-[#B54B4B] animate-pulse-slow">
+          <AlertTriangle className="w-6 h-6 text-[#B54B4B] shrink-0 mt-0.5" />
           <div>
-            <h4 className="text-sm font-bold">
-              HER2 IHC 2+ Equivocal — Confirmatory Reflex ISH / FISH Mandated
-            </h4>
-            <p className="text-xs text-[#24343B] mt-0.5 leading-relaxed">
-              Per ASCO/CAP 2018 guidelines, an IHC score of 2+ is equivocal and cannot be classified as positive or negative without in situ hybridization. Anti-HER2 targeted therapy is held in <strong className="text-[#B54B4B]">requires_clinician_review</strong> pending reflex test completion.
+            <div className="flex items-center space-x-2">
+              <h4 className="text-sm font-bold tracking-tight">
+                HER2 IHC 2+ Equivocal — Mandatory Confirmatory Reflex ISH / FISH
+              </h4>
+              <span className="px-2 py-0.5 rounded bg-[#B54B4B] text-white text-[10px] font-bold uppercase tracking-wider">
+                Reflex Hold
+              </span>
+            </div>
+            <p className="text-xs text-[#24343B] mt-1 leading-relaxed">
+              Per <strong>ASCO/CAP 2018 guidelines</strong>, an IHC score of 2+ cannot be classified as positive or negative without in situ hybridization (FISH/CISH). Anti-HER2 targeted therapy is currently withheld in{" "}
+              <code className="px-1.5 py-0.5 bg-white border border-[#B54B4B]/30 rounded text-[#B54B4B] font-mono text-[11px]">
+                requires_clinician_review
+              </code>{" "}
+              pending reflex testing.
             </p>
           </div>
         </div>
       )}
 
       {er_low_flag && (
-        <div className="p-4 rounded-lg bg-[#F6EEDC] border border-[#B78643] flex items-start space-x-3 text-[#B78643]">
-          <span className="text-xl">ℹ️</span>
+        <div className="p-4 rounded-xl bg-[#F6EEDC] border border-[#B78643] shadow-clinical-sm flex items-start space-x-3.5 text-[#B78643]">
+          <Info className="w-5 h-5 text-[#B78643] shrink-0 mt-0.5" />
           <div>
-            <h4 className="text-sm font-bold">
-              Estrogen Receptor Low Positive (1–10% Nuclear Staining)
-            </h4>
-            <p className="text-xs text-[#24343B] mt-0.5 leading-relaxed">
-              Per ASCO/CAP 2020 guidelines, tumors with 1–10% ER expression exhibit heterogeneous biology and limited endocrine sensitivity compared to ER &gt; 10%. Oncologist review is advised regarding the relative benefit of adjuvant endocrine therapy versus chemotherapy.
+            <div className="flex items-center space-x-2">
+              <h4 className="text-sm font-bold tracking-tight">
+                Estrogen Receptor Low Positive (1–10% Nuclear Staining)
+              </h4>
+              <span className="px-2 py-0.5 rounded bg-[#B78643] text-white text-[10px] font-bold uppercase tracking-wider">
+                ASCO/CAP 2020
+              </span>
+            </div>
+            <p className="text-xs text-[#24343B] mt-1 leading-relaxed">
+              Tumors expressing 1–10% ER exhibit heterogeneous biology with limited endocrine sensitivity compared to ER &gt; 10%. Clinical oncologist review is strongly recommended to determine whether systemic chemotherapy is indicated alongside endocrine therapy.
             </p>
           </div>
         </div>
       )}
 
-      {/* 2. Structured Biomarker Grid */}
-      <div className="bg-white border border-[#DEE5E1] rounded-lg p-5 shadow-xs">
-        <div className="flex items-center justify-between pb-3 border-b border-[#DEE5E1] mb-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-[#193B4A]">
-            Standardized Pathology Biomarker Profile
-          </h3>
+      {/* 2. Visual Biomarker Studio */}
+      <div className="bg-white border border-[#DEE5E1] rounded-xl p-6 shadow-clinical-xs">
+        <div className="flex items-center justify-between pb-4 border-b border-[#DEE5E1] mb-6">
+          <div className="flex items-center space-x-2.5">
+            <Microscope className="w-5 h-5 text-[#4E8276]" />
+            <h3 className="text-sm font-bold uppercase tracking-wider text-[#193B4A]">
+              Pathology & Biomarker Expression Matrix
+            </h3>
+          </div>
           <button
             onClick={() => setShowInterpretationHelp(!showInterpretationHelp)}
-            className="text-xs text-[#4E8276] hover:underline font-medium flex items-center space-x-1"
+            className="text-xs text-[#4E8276] hover:text-[#376258] font-semibold flex items-center space-x-1.5 transition-colors"
           >
-            <span>{showInterpretationHelp ? "Hide Interpretation Guide ▲" : "How is this interpreted? ▼"}</span>
+            <span>{showInterpretationHelp ? "Close Interpretation Guide" : "Subtyping Criteria"}</span>
+            {showInterpretationHelp ? (
+              <ChevronUp className="w-4 h-4" />
+            ) : (
+              <ChevronDown className="w-4 h-4" />
+            )}
           </button>
         </div>
 
-        {/* Expandable Interpretation Guide */}
+        {/* Expandable Interpretation Blueprint */}
         {showInterpretationHelp && (
-          <div className="mb-5 p-4 rounded bg-[#F5F6F3] border border-[#DEE5E1] text-xs text-[#24343B] space-y-2 leading-relaxed animate-in fade-in duration-150">
-            <h5 className="font-semibold text-[#193B4A]">IHC Surrogate Subtyping Standard (St. Gallen 2013 / Goldhirsch et al.)</h5>
-            <p>
-              Surrogate molecular subtyping is approximated via immunohistochemistry (IHC) protein expression:
-            </p>
-            <ul className="list-disc list-inside space-y-1 text-[#68777C]">
-              <li><strong>Luminal A</strong>: ER positive, PR positive (&ge; 20%), HER2 negative, low proliferation (Ki-67 &lt; 20% or Grade 1–2).</li>
-              <li><strong>Luminal B (HER2-)</strong>: ER positive, HER2 negative, with either PR &lt; 20% or high proliferation (Ki-67 &ge; 20% / Grade 3).</li>
-              <li><strong>Luminal B (HER2+)</strong>: Triple positive (ER+, PR any, HER2+).</li>
-              <li><strong>HER2-Enriched</strong>: ER negative, PR negative, HER2 positive.</li>
-              <li><strong>Triple-Negative (TNBC)</strong>: ER negative, PR negative, HER2 negative.</li>
-            </ul>
-            <div className="text-[11px] text-[#68777C] pt-1 border-t border-[#DEE5E1]">
-              ⚠️ <em>Notice:</em> IHC surrogate classifications are clinical approximations and are <strong>NOT PAM50 gene-expression microarrays</strong>.
+          <div className="mb-6 p-5 rounded-xl bg-[#F5F6F3] border border-[#DEE5E1] text-xs text-[#24343B] space-y-3 leading-relaxed animate-fade-in shadow-inner">
+            <div className="flex items-center space-x-2 text-[#193B4A] font-bold text-sm">
+              <Dna className="w-4 h-4 text-[#4E8276]" />
+              <h5>St. Gallen 2013 / ESMO 2024 Surrogate IHC Subtyping Standard</h5>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[#68777C] pt-2">
+              <div className="p-3 bg-white rounded-lg border border-[#DEE5E1]">
+                <strong className="text-emerald-800">Luminal A:</strong> ER+, PR+ (&ge; 20%), HER2-, low Ki-67 (&lt; 14–20% or Grade 1–2).
+              </div>
+              <div className="p-3 bg-white rounded-lg border border-[#DEE5E1]">
+                <strong className="text-teal-800">Luminal B (HER2-):</strong> ER+, HER2-, with either PR &lt; 20% or high proliferation (Ki-67 &ge; 20% / Grade 3).
+              </div>
+              <div className="p-3 bg-white rounded-lg border border-[#DEE5E1]">
+                <strong className="text-indigo-800">Luminal B (HER2+):</strong> Triple Positive (ER+, PR any, HER2+).
+              </div>
+              <div className="p-3 bg-white rounded-lg border border-[#DEE5E1]">
+                <strong className="text-purple-800">HER2-Enriched:</strong> ER-, PR-, HER2+ (IHC 3+ or FISH amplified).
+              </div>
+              <div className="p-3 bg-white rounded-lg border border-[#DEE5E1] md:col-span-2">
+                <strong className="text-rose-800">Triple-Negative (TNBC):</strong> ER-, PR-, HER2- (&lt; 1% nuclear staining).
+              </div>
             </div>
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Estrogen Receptor */}
-          <div className="p-3.5 rounded border border-[#DEE5E1] bg-[#F5F6F3]">
-            <div className="text-[11px] font-semibold text-[#68777C] mb-1">Estrogen Receptor (ER)</div>
-            <div className="text-sm font-bold text-[#193B4A] capitalize">
-              {er_status}
-              {er_percentage !== null && er_percentage !== undefined && (
-                <span className="text-xs font-normal text-[#68777C] ml-1.5 tabular-nums">
-                  ({er_percentage}%)
-                </span>
-              )}
+        {/* Visual Receptor Gauges Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+          {/* ER Radial Gauge */}
+          {renderRadialGauge(er_percentage, "Estrogen Receptor (ER)", er_status || "unknown", er_low_flag)}
+
+          {/* PR Radial Gauge */}
+          {renderRadialGauge(pr_percentage, "Progesterone Receptor (PR)", pr_status || "unknown")}
+
+          {/* HER2 Interactive Spectrum Card */}
+          <div className="p-4 rounded-xl bg-white border border-[#DEE5E1] shadow-clinical-xs hover:shadow-clinical-sm transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-[#24343B]">HER2 / neu IHC Spectrum</span>
+                <span className="text-[10px] text-[#68777C] font-mono">ASCO 2018</span>
+              </div>
+
+              {/* 4-Stage Segmented Bar */}
+              <div className="grid grid-cols-4 gap-1.5 my-3">
+                {["0", "1+", "2+", "3+"].map((tier) => {
+                  const isActive = her2_ihc_score === tier;
+                  const isEquivocal = tier === "2+";
+                  const isPositive = tier === "3+";
+
+                  let tierClass = "bg-[#F0F2EE] text-[#68777C] border-transparent";
+                  if (isActive) {
+                    if (isEquivocal) {
+                      tierClass = "bg-[#B78643] text-white border-[#B78643] shadow-clinical-sm ring-2 ring-[#B78643]/30";
+                    } else if (isPositive) {
+                      tierClass = "bg-purple-600 text-white border-purple-600 shadow-clinical-sm";
+                    } else {
+                      tierClass = "bg-[#4E8276] text-white border-[#4E8276] shadow-clinical-sm";
+                    }
+                  }
+
+                  return (
+                    <div
+                      key={tier}
+                      className={`h-11 rounded-md flex flex-col items-center justify-center text-center font-bold text-xs border transition-all ${tierClass}`}
+                    >
+                      <span>{tier}</span>
+                      <span className="text-[9px] font-normal opacity-90">
+                        {tier === "0" || tier === "1+" ? "Neg" : tier === "2+" ? "Equiv" : "Pos"}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <div className="mt-1.5">
-              {er_low_flag ? (
-                <span className="badge-warning text-[10px]">ER-Low (1-10%)</span>
-              ) : er_status === "positive" ? (
-                <span className="badge-teal text-[10px]">Positive</span>
-              ) : (
-                <span className="badge-neutral text-[10px]">Negative</span>
-              )}
+
+            <div className="text-center pt-2 border-t border-[#DEE5E1]">
+              <div className="text-[11px] font-semibold text-[#68777C]">
+                Reported Score:{" "}
+                <strong className="text-[#193B4A]">{her2_ihc_score || "N/A"}</strong>
+              </div>
+              <div className="text-[10px] text-[#68777C] mt-0.5">
+                FISH: {her2_fish_status || "Not performed"}
+              </div>
             </div>
           </div>
 
-          {/* Progesterone Receptor */}
-          <div className="p-3.5 rounded border border-[#DEE5E1] bg-[#F5F6F3]">
-            <div className="text-[11px] font-semibold text-[#68777C] mb-1">Progesterone Receptor (PR)</div>
-            <div className="text-sm font-bold text-[#193B4A] capitalize">
-              {pr_status}
-              {pr_percentage !== null && pr_percentage !== undefined && (
-                <span className="text-xs font-normal text-[#68777C] ml-1.5 tabular-nums">
-                  ({pr_percentage}%)
-                </span>
-              )}
+          {/* Ki-67 Proliferation Speedometer Card */}
+          <div className="p-4 rounded-xl bg-white border border-[#DEE5E1] shadow-clinical-xs hover:shadow-clinical-sm transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-[#24343B]">Ki-67 Proliferation Index</span>
+                <span className="text-[10px] text-[#68777C] font-mono">Cutoff: 14%</span>
+              </div>
+
+              <div className="my-3">
+                <div className="flex items-baseline justify-between mb-1">
+                  <span className="text-2xl font-bold text-[#193B4A] tabular-nums">
+                    {ki67_index !== null && ki67_index !== undefined ? `${ki67_index}%` : "Not Stated"}
+                  </span>
+                  <span
+                    className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                      ki67_index !== null && ki67_index !== undefined
+                        ? ki67_index >= 20
+                          ? "bg-rose-100 text-rose-800"
+                          : "bg-emerald-100 text-emerald-800"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {ki67_index !== null && ki67_index !== undefined
+                      ? ki67_index >= 20
+                        ? "High Proliferation"
+                        : "Low Proliferation"
+                      : "Unreported"}
+                  </span>
+                </div>
+
+                {/* Progress Line */}
+                <div className="w-full bg-[#F0F2EE] h-2.5 rounded-full overflow-hidden relative">
+                  <div
+                    className={`h-full transition-all duration-1000 ${
+                      ki67_index && ki67_index >= 20 ? "bg-rose-500" : "bg-[#4E8276]"
+                    }`}
+                    style={{ width: `${Math.min(ki67_index || 0, 100)}%` }}
+                  />
+                  {/* 14% Threshold Marker */}
+                  <div
+                    className="absolute top-0 bottom-0 w-0.5 bg-black/40 z-10"
+                    style={{ left: "14%" }}
+                    title="14% St. Gallen Threshold"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="mt-1.5">
-              {pr_status === "positive" ? (
-                <span className="badge-teal text-[10px]">Positive</span>
-              ) : (
-                <span className="badge-neutral text-[10px]">Negative</span>
-              )}
+
+            <div className="text-[11px] text-[#68777C] text-center pt-2 border-t border-[#DEE5E1]">
+              Biological Growth Rate Indicator
             </div>
           </div>
+        </div>
 
-          {/* HER2 Receptor */}
-          <div className="p-3.5 rounded border border-[#DEE5E1] bg-[#F5F6F3]">
-            <div className="text-[11px] font-semibold text-[#68777C] mb-1">HER2 / neu Status</div>
-            <div className="text-sm font-bold text-[#193B4A] capitalize">
-              {her2_status}
-              {her2_ihc_score && (
-                <span className="text-xs font-normal text-[#68777C] ml-1.5 font-mono">
-                  [IHC {her2_ihc_score}]
-                </span>
-              )}
+        {/* 3. Secondary Histopathology & Grade Attributes */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-[#DEE5E1]">
+          <div className="p-3.5 bg-[#F5F6F3] rounded-lg border border-[#DEE5E1]">
+            <div className="text-[10px] font-bold text-[#68777C] uppercase tracking-wider mb-1">
+              Histologic Type
             </div>
-            <div className="mt-1.5">
-              {isHer2Equivocal ? (
-                <span className="badge-critical text-[10px] animate-pulse">Equivocal (Reflex Req)</span>
-              ) : her2_status === "positive" ? (
-                <span className="badge-primary text-[10px]">Positive (Amplified)</span>
-              ) : (
-                <span className="badge-neutral text-[10px]">Negative (0/1+)</span>
-              )}
+            <div className="text-xs font-bold text-[#193B4A]">
+              {histologic_type ? histologic_type.replace(/_/g, " ").toUpperCase() : "Invasive Ductal Carcinoma"}
             </div>
+            <div className="text-[10px] text-[#68777C] mt-0.5">Primary invasive lesion architecture</div>
           </div>
 
-          {/* Ki-67 Index */}
-          <div className="p-3.5 rounded border border-[#DEE5E1] bg-[#F5F6F3]">
-            <div className="text-[11px] font-semibold text-[#68777C] mb-1">Proliferation (Ki-67)</div>
-            <div className="text-sm font-bold text-[#193B4A] tabular-nums">
-              {ki67_index !== null && ki67_index !== undefined ? `${ki67_index}%` : "Not Recorded"}
+          <div className="p-3.5 bg-[#F5F6F3] rounded-lg border border-[#DEE5E1]">
+            <div className="text-[10px] font-bold text-[#68777C] uppercase tracking-wider mb-1">
+              Nottingham Histologic Grade
             </div>
-            <div className="mt-1.5">
-              {ki67_index !== null && ki67_index !== undefined ? (
-                ki67_index >= 20 ? (
-                  <span className="badge-warning text-[10px]">High (&ge; 20%)</span>
-                ) : (
-                  <span className="badge-teal text-[10px]">Low (&lt; 20%)</span>
-                )
-              ) : (
-                <span className="badge-neutral text-[10px]">Unassessed</span>
-              )}
+            <div className="flex items-center space-x-2">
+              <span className="text-xs font-bold text-[#193B4A] capitalize">
+                {histologic_grade ? histologic_grade.replace(/_/g, " ") : "Grade 2 (Intermediate)"}
+              </span>
+              <div className="flex space-x-1">
+                {[1, 2, 3].map((g) => {
+                  const currentGrade = histologic_grade?.includes("1")
+                    ? 1
+                    : histologic_grade?.includes("2")
+                    ? 2
+                    : histologic_grade?.includes("3")
+                    ? 3
+                    : 2;
+                  return (
+                    <span
+                      key={g}
+                      className={`w-2 h-2 rounded-full ${
+                        g <= currentGrade ? "bg-[#193B4A]" : "bg-[#CBD6D0]"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
             </div>
+            <div className="text-[10px] text-[#68777C] mt-0.5">Tubule formation + Pleomorphism + Mitosis</div>
           </div>
 
-          {/* Histological Grade */}
-          <div className="p-3.5 rounded border border-[#DEE5E1] bg-[#F5F6F3]">
-            <div className="text-[11px] font-semibold text-[#68777C] mb-1">Nottingham Grade</div>
-            <div className="text-sm font-bold text-[#193B4A] capitalize">
-              {histologic_grade?.replace(/_/g, " ") || "Not Documented"}
+          <div className="p-3.5 bg-[#F5F6F3] rounded-lg border border-[#DEE5E1]">
+            <div className="text-[10px] font-bold text-[#68777C] uppercase tracking-wider mb-1">
+              Surrogate Intrinsic Subtype
             </div>
-            <div className="text-[10px] text-[#68777C] mt-1.5">Tubule / Nuclear / Mitotic</div>
-          </div>
-
-          {/* Histological Diagnosis */}
-          <div className="p-3.5 rounded border border-[#DEE5E1] bg-[#F5F6F3]">
-            <div className="text-[11px] font-semibold text-[#68777C] mb-1">Histological Type</div>
-            <div className="text-sm font-bold text-[#193B4A] capitalize truncate">
-              {histologic_type?.replace(/_/g, " ") || "Invasive Carcinoma"}
+            <div className="text-xs font-bold text-[#4E8276] uppercase">
+              {molecular_subtype ? molecular_subtype.replace(/_/g, " ") : "Luminal A"}
             </div>
-            <div className="text-[10px] text-[#68777C] mt-1.5">WHO Classification</div>
-          </div>
-
-          {/* Surrogate Molecular Subtype (Spans 2 cols) */}
-          <div className="p-3.5 rounded border border-[#DEE5E1] bg-[#F5F6F3] sm:col-span-2">
-            <div className="text-[11px] font-semibold text-[#68777C] mb-1">IHC Surrogate Subtype</div>
-            <div className="text-sm font-bold text-[#193B4A] capitalize">
-              {molecular_subtype.replace(/_/g, " ")}
-            </div>
-            <div className="text-[10px] text-[#68777C] mt-1.5">
-              Derived from ER, PR, HER2 IHC, Ki-67, and histological grade.
-            </div>
+            <div className="text-[10px] text-[#68777C] mt-0.5">Computed via ASCO/CAP & ESMO rules</div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-

@@ -17,6 +17,10 @@
   --clinical-criticalBg: #F8E9E7;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--clinical-bg);
   color: var(--clinical-text);
@@ -26,20 +30,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for clinical dense data tables */
+/* Custom scrollbar for high-density clinical data */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #F5F6F3;
+  background: #F0F2EE;
 }
 ::-webkit-scrollbar-thumb {
-  background: #DEE5E1;
-  border-radius: 3px;
+  background: #CBD6D0;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #68777C;
+  background: #4E8276;
 }
 
 /* Tabular figures for clinical metrics and percentages */
@@ -47,9 +51,39 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Clinical Glassmorphism & Elevation */
+.clinical-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(222, 229, 225, 0.7);
+}
+
+.clinical-card {
+  background: #FFFFFF;
+  border: 1px solid #DEE5E1;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(25, 59, 74, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clinical-card-interactive {
+  background: #FFFFFF;
+  border: 1px solid #DEE5E1;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(25, 59, 74, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clinical-card-interactive:hover {
+  border-color: #4E8276;
+  box-shadow: 0 8px 24px rgba(25, 59, 74, 0.09);
+  transform: translateY(-2px);
+}
+
 @layer components {
   .badge-primary {
-    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#193B4A] text-white;
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#193B4A] text-white shadow-sm;
   }
   .badge-teal {
     @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#E7F0EA] text-[#4E8276] border border-[#DEE5E1];
