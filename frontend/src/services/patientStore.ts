@@ -615,30 +615,65 @@ const INITIAL_PATIENTS: PatientRecord[] = [
     treatmentOptions: [
       {
         id: "TX-01",
-        title: "Breast-Conserving Surgery (Lumpectomy) + SLNB",
-        modality: "Surgical Locoregional",
-        intent: "Curative Locoregional",
-        status: "supported",
-        supportingGuideline: "ESMO 2024 / NCCN Category 1",
-        rationale: "Tumor size 2.2 cm in average-sized breast allows clear margins with favorable cosmetic outcome.",
-      },
-      {
-        id: "TX-02",
-        title: "Adjuvant Endocrine Therapy: Non-Steroidal Aromatase Inhibitor",
+        title: "Adjuvant Endocrine Therapy: Non-Steroidal Aromatase Inhibitor (Letrozole 2.5mg OD)",
         modality: "Endocrine Hormonal",
         intent: "Adjuvant Systemic",
         status: "supported",
         supportingGuideline: "ESMO 2024 / ASCO Adjuvant Endocrine Guidelines",
         rationale: "Patient is postmenopausal with high ER/PR positivity (85%/70%). 5 years of Letrozole (2.5mg OD) or Anastrozole (1mg OD) significantly reduces recurrence risk.",
+        rank: 1,
+        rankBadge: "Rank 1: Preferred First-Line Standard of Care",
+        whyChosen: [
+          "Strong ER nuclear positivity (85%) predicts high endocrine responsiveness.",
+          "Postmenopausal status: Aromatase inhibitors have superior recurrence reduction compared to tamoxifen.",
+          "Preserved cardiac function (LVEF 62%) and renal clearance (CrCl 78 mL/min).",
+        ],
+      },
+      {
+        id: "TX-02",
+        title: "Breast-Conserving Surgery (Lumpectomy) + Sentinel Lymph Node Biopsy (SLNB)",
+        modality: "Surgical Locoregional",
+        intent: "Curative Locoregional",
+        status: "supported",
+        supportingGuideline: "ESMO 2024 / NCCN Category 1",
+        rationale: "Tumor size 2.2 cm in average-sized breast allows clear margins with favorable cosmetic outcome.",
+        rank: 2,
+        rankBadge: "Rank 2: Preferred Surgical Standard of Care",
+        whyChosen: [
+          "cT2 (22 mm) unicentric lesion allows breast conservation with negative microscopic margins.",
+          "Clinically node-negative (cN0) allows axillary sparing via sentinel lymph node biopsy alone.",
+        ],
       },
       {
         id: "TX-03",
-        title: "Whole Breast Adjuvant Hypofractionated Radiotherapy",
+        title: "Whole Breast Adjuvant Hypofractionated Radiotherapy (40 Gy in 15 fx)",
         modality: "Locoregional Radiation",
         intent: "Adjuvant Locoregional",
         status: "supported",
         supportingGuideline: "ASTRO / ESMO 2024 Hypofractionated Protocol",
         rationale: "Mandated following breast-conserving surgery (40 Gy in 15 fractions over 3 weeks).",
+        rank: 3,
+        rankBadge: "Rank 3: Mandatory Post-BCS Locoregional Therapy",
+        whyChosen: [
+          "Mandatory following breast-conserving surgery to achieve local control equivalent to mastectomy.",
+          "Hypofractionated 3-week course is preferred standard of care per ESMO guidelines.",
+        ],
+      },
+      {
+        id: "TX-04-HER2",
+        title: "Anti-HER2 Targeted Monoclonal Antibodies (Trastuzumab + Pertuzumab)",
+        modality: "Targeted Biotherapy",
+        intent: "Targeted Therapy",
+        status: "contraindicated",
+        supportingGuideline: "ASCO/CAP HER2 Guidelines",
+        rationale: "Contraindicated: Tumor is HER2 IHC 1+ (Negative / Non-amplified). Zero clinical benefit.",
+        contraindicationNote: "NOT INDICATED / WITHHELD: Tumor is HER2 IHC 1+ (Negative / Non-amplified). Exposing patient to anti-HER2 antibodies incurs unnecessary cardiotoxicity without clinical benefit.",
+        rank: 4,
+        rankBadge: "Rank 4: Contraindicated / Not Indicated",
+        whyChosen: [
+          "HER2 IHC 1+ is strictly non-amplified.",
+          "Guideline consensus restricts anti-HER2 targeted agents strictly to HER2 3+ or ISH-amplified disease.",
+        ],
       },
     ],
     oncologistNotes: "Patient informed of biopsy findings. Scheduled for multidisciplinary tumor board discussion on Tuesday.",
@@ -769,14 +804,65 @@ const INITIAL_PATIENTS: PatientRecord[] = [
     ],
     treatmentOptions: [
       {
-        id: "TX-04",
-        title: "Neoadjuvant Targeted Therapy (TCHP)",
-        modality: "Targeted Biotherapy",
-        intent: "Neoadjuvant Curative",
+        id: "TX-ELENA-01",
+        title: "Automated Dual-Probe Reflex In Situ Hybridization (FISH/CISH)",
+        modality: "Diagnostic Pathology Protocol",
+        intent: "Mandatory Confirmatory Diagnostic",
+        status: "supported",
+        supportingGuideline: "ASCO/CAP 2018/2023 HER2 Testing Consensus",
+        rationale: "IHC 2+ is equivocal. Clinical decision requires confirmatory dual-probe ISH testing.",
+        rank: 1,
+        rankBadge: "Rank 1: Mandatory Diagnostic Reflex Step",
+        whyChosen: [
+          "HER2 IHC score 2+ is strictly equivocal under ASCO/CAP guidelines.",
+          "Dual-probe FISH (HER2/CEP17 ratio) is mandatory before any targeted therapy can be ordered.",
+        ],
+      },
+      {
+        id: "TX-ELENA-02",
+        title: "Urgent Cardio-Oncology Evaluation & Repeat Echocardiogram in 4 Weeks",
+        modality: "Cardio-Oncology Safety Protocol",
+        intent: "Organ Safety Optimization",
+        status: "supported",
+        supportingGuideline: "ESMO / ESC Cardio-Oncology Guidelines 2024",
+        rationale: "Baseline LVEF 42% is below the 50% safety cutoff for systemic breast oncology regimens.",
+        rank: 2,
+        rankBadge: "Rank 2: Mandatory Cardio-Oncology Referral",
+        whyChosen: [
+          "Documented LVEF 42% is in the moderate ventricular dysfunction range.",
+          "Heart failure optimization required prior to curative-intent systemic chemotherapy.",
+        ],
+      },
+      {
+        id: "TX-ELENA-03",
+        title: "Non-Anthracycline Systemic Pathway (Held Pending FISH & Cardio-Clearance)",
+        modality: "Systemic Therapy",
+        intent: "Systemic Risk Reduction",
         status: "review_required",
-        supportingGuideline: "ESMO 2024 / TRYPHAENA Trial",
-        rationale: "Candidate regimen IF reflex FISH confirms HER2 amplification. Currently held under safety guardrail.",
-        contraindicationNote: "Requires FISH confirmation before initiation.",
+        supportingGuideline: "ESMO 2024 Cardiac Safety Consensus",
+        rationale: "Anthracycline-sparing systemic approach once reflex FISH testing is completed.",
+        rank: 3,
+        rankBadge: "Rank 3: Alternative Systemic Pathway (Held)",
+        whyChosen: [
+          "Avoids anthracycline-induced irreversible myocardial necrosis.",
+          "Held pending FISH result and cardiac stabilization.",
+        ],
+      },
+      {
+        id: "TX-ELENA-04",
+        title: "Anthracycline Chemotherapy (AC) & Anti-HER2 Targeted Agents",
+        modality: "Systemic Chemotherapy / Targeted Biotherapy",
+        intent: "Systemic Curative",
+        status: "contraindicated",
+        supportingGuideline: "ESMO / ASCO Safety Firewall",
+        rationale: "CRITICAL CONTRAINDICATION: Documented LVEF 42% (< 50%) strictly contraindicates cardiotoxic agents.",
+        contraindicationNote: "CRITICAL CONTRAINDICATION: Baseline LVEF 42% is severely below the 50% cutoff. Anti-HER2 monoclonal antibodies and anthracyclines are withheld to prevent irreversible heart failure.",
+        rank: 4,
+        rankBadge: "Rank 4: CRITICAL CONTRAINDICATION (Withheld)",
+        whyChosen: [
+          "LVEF 42% breaches cardiac safety firewall threshold (>= 50%).",
+          "Risk of fatal congestive heart failure significantly outweighs oncologic benefit.",
+        ],
       },
     ],
   },
@@ -844,23 +930,66 @@ const INITIAL_PATIENTS: PatientRecord[] = [
     ],
     treatmentOptions: [
       {
-        id: "TX-05",
-        title: "Anthracycline-Containing AC-T Regimen",
-        modality: "Systemic Chemotherapy",
-        intent: "Neoadjuvant",
-        status: "contraindicated",
-        supportingGuideline: "NCCN Guidelines",
-        rationale: "Omitted: LVEF 42% breaches cardiac safety cutoff.",
-        contraindicationNote: "ABSOLUTE CONTRAINDICATION: Documented LVEF 42% <= 45%.",
-      },
-      {
         id: "TX-06",
-        title: "Carboplatin + Paclitaxel + Pembrolizumab (Non-Anthracycline)",
+        title: "Anthracycline-Sparing Chemo-Immunotherapy (Carboplatin + Paclitaxel + Pembrolizumab)",
         modality: "Neoadjuvant Chemo-Immunotherapy",
         intent: "Neoadjuvant Curative",
         status: "supported",
-        supportingGuideline: "ESMO 2024 / KEYNOTE-522 Modified",
+        supportingGuideline: "ESMO 2024 / KEYNOTE-522 Modified Cardio-Safe",
         rationale: "Anthracycline-sparing regimen with proven pathological complete response (pCR) efficacy.",
+        rank: 1,
+        rankBadge: "Rank 1: Preferred First-Line Standard of Care (Cardio-Safe)",
+        whyChosen: [
+          "Triple-negative biology (ER 0%, PR 0%, HER2 0) is highly responsive to platinum and taxane agents.",
+          "Stage IIB (cT2 cN1) tumor > 20 mm with nodal involvement is an established KEYNOTE-522 indication.",
+          "Anthracycline omission preserves left ventricular ejection fraction in compromised myocardium.",
+        ],
+      },
+      {
+        id: "TX-PRIYA-02",
+        title: "Surgical Resection: Modified Radical Mastectomy or BCS + Axillary Dissection",
+        modality: "Surgical Locoregional",
+        intent: "Primary Local Control",
+        status: "supported",
+        supportingGuideline: "ESMO 2024 / ASCO Surgical Consensus",
+        rationale: "Planned following completion of neoadjuvant systemic therapy to assess pathological response.",
+        rank: 2,
+        rankBadge: "Rank 2: Preferred Surgical Standard (Post-Neoadjuvant)",
+        whyChosen: [
+          "cN1 nodal involvement requires level I/II axillary clearance or clipped-node targeted dissection.",
+          "Permits pathological complete response (pCR) assessment to guide adjuvant capecitabine vs pembrolizumab.",
+        ],
+      },
+      {
+        id: "TX-PRIYA-03",
+        title: "Post-Mastectomy Locoregional Radiation Therapy (PMRT) to Chest Wall & Nodal Basin",
+        modality: "Locoregional Radiation",
+        intent: "Adjuvant Locoregional",
+        status: "supported",
+        supportingGuideline: "ESMO / ASTRO Post-Mastectomy Protocol",
+        rationale: "Indicated for initial clinical node-positive (cN1) and primary tumor > 3 cm.",
+        rank: 3,
+        rankBadge: "Rank 3: Mandatory Locoregional Radiation",
+        whyChosen: [
+          "cT2 (35 mm) and cN1 disease carries elevated risk of locoregional chest wall recurrence.",
+          "Radiation to nodal beds significantly improves overall survival in node-positive TNBC.",
+        ],
+      },
+      {
+        id: "TX-05",
+        title: "Anthracycline-Containing AC-T Regimen (Doxorubicin / Cyclophosphamide)",
+        modality: "Systemic Chemotherapy",
+        intent: "Neoadjuvant",
+        status: "contraindicated",
+        supportingGuideline: "NCCN / ESMO Cardiac Safety Firewall",
+        rationale: "Omitted: LVEF 42% breaches cardiac safety cutoff.",
+        contraindicationNote: "ABSOLUTE CONTRAINDICATION: Documented LVEF 42% <= 45%. Anthracyclines strictly prohibited due to imminent risk of refractory heart failure.",
+        rank: 4,
+        rankBadge: "Rank 4: CRITICAL CONTRAINDICATION (Strictly Prohibited)",
+        whyChosen: [
+          "LVEF 42% breaches cardiac safety cutoff (< 45%).",
+          "Doxorubicin induces cumulative dose-dependent myocardial cell death.",
+        ],
       },
     ],
   },
@@ -872,11 +1001,20 @@ export const PatientStore = {
     try {
       const stored = localStorage.getItem("cdss_oncology_patients");
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (
+          Array.isArray(parsed) &&
+          parsed.length >= 4 &&
+          parsed.some((p: PatientRecord) => p.id === "TMC-2026-09412") &&
+          parsed.every((p: PatientRecord) => p.treatmentOptions && p.treatmentOptions.some((t: any) => t.rank))
+        ) {
+          return parsed;
+        }
       }
     } catch {
       // fallback
     }
+    this.savePatients(INITIAL_PATIENTS);
     return INITIAL_PATIENTS;
   },
 

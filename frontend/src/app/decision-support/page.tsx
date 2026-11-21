@@ -29,6 +29,7 @@ import {
   MessageSquare,
   ThumbsUp,
   Sliders,
+  RefreshCw,
 } from "lucide-react";
 
 export default function DecisionSupportPage() {
@@ -83,6 +84,15 @@ export default function DecisionSupportPage() {
     setActivePatientState(getActivePatient());
   };
 
+  const handleResetData = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("cdss_oncology_patients");
+    }
+    const fresh = getPatients();
+    setPatients(fresh);
+    setActivePatientState(getActivePatient());
+  };
+
   if (!activePatient) {
     return (
       <div className="flex-1 flex items-center justify-center p-12">
@@ -100,8 +110,26 @@ export default function DecisionSupportPage() {
   const isLvefLow = safetyStatus.lvefPercent !== undefined && safetyStatus.lvefPercent < 50;
   const isLvefMissing = safetyStatus.lvefPercent === undefined;
 
-  // Sort treatment options by rank ascending
-  const sortedTreatments = [...treatmentOptions].sort((a, b) => (a.rank || 99) - (b.rank || 99));
+  // Sort treatment options by rank ascending, ensuring fallbacks exist
+  const sortedTreatments = [...treatmentOptions]
+    .map((opt, idx) => {
+      const assignedRank = opt.rank || (opt.status === "contraindicated" ? 4 : idx + 1);
+      const assignedBadge =
+        opt.rankBadge ||
+        (assignedRank === 1
+          ? "Rank 1: Preferred First-Line Standard of Care"
+          : assignedRank === 2
+          ? "Rank 2: Preferred Surgical Standard of Care"
+          : assignedRank === 3
+          ? "Rank 3: Locoregional / Alternative Option"
+          : "Rank 4: Contraindicated / Not Indicated");
+      return {
+        ...opt,
+        rank: assignedRank,
+        rankBadge: assignedBadge,
+      };
+    })
+    .sort((a, b) => a.rank - b.rank);
 
   return (
     <div className="flex-1 w-full px-6 lg:px-10 py-6 space-y-6">
@@ -143,6 +171,15 @@ export default function DecisionSupportPage() {
               ))}
             </select>
           </div>
+
+          <button
+            onClick={handleResetData}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#DEE5E1] text-[#193B4A] hover:bg-[#F5F6F3] text-xs font-semibold rounded-lg shadow-xs transition-colors"
+            title="Reset cached state and reload all latest ranked guidelines"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-[#4E8276]" />
+            <span>Sync Ranks</span>
+          </button>
 
           <Link
             href="/reports"
