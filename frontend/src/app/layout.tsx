@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "../components/Sidebar";
+import TopNavbar from "../components/TopNavbar";
 
 export const metadata: Metadata = {
-  title: "Breast Cancer CDSS — Clinical Decision Support System",
-  description: "Explainable, guideline-based clinical decision support system for breast cancer.",
+  title: "OncoSupport CDSS — Breast Cancer Decision Support System",
+  description: "Explainable, guideline-based clinical decision support platform for oncologists.",
 };
 
 export default function RootLayout({
@@ -14,12 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-[#F5F6F3] text-[#24343B] min-h-screen flex antialiased">
-        {/* Navigation Sidebar */}
-        <Sidebar />
+      <body className="bg-[#F5F6F3] text-[#24343B] min-h-screen flex flex-col antialiased">
+        {/* Top Clinical Navigation Bar */}
+        <TopNavbar />
 
-        {/* Main Content Viewport */}
-        <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
+        {/* Full-Width Main Viewport */}
+        <div className="flex-1 w-full flex flex-col">
           {children}
         </div>
       </body>
