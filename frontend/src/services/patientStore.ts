@@ -113,11 +113,300 @@ export interface PatientRecord {
     supportingGuideline: string;
     rationale: string;
     contraindicationNote?: string;
+    rank?: number;
+    rankBadge?: string;
+    whyChosen?: string[];
+    doctorFeedback?: {
+      action: "accepted" | "modified" | "rejected" | "under_review";
+      comment: string;
+      oncologistName: string;
+      timestamp: string;
+    };
   }>;
   oncologistNotes?: string;
 }
 
 const INITIAL_PATIENTS: PatientRecord[] = [
+  {
+    id: "TMC-2026-09412",
+    name: "Sunita Deshmukh",
+    dob: "1972-03-24",
+    age: 54,
+    sex: "Female",
+    contactPhone: "+91 98201 44521",
+    contactEmail: "sunita.d@demo-tmc.res.in",
+    diagnosisDate: "2026-11-15",
+    medicalHistory: "54-year-old postmenopausal lady presenting to Tata Memorial Centre, Mumbai with painless right breast mass. Mammography confirmed 2.4 cm mass (BI-RADS 5). Echocardiogram: Normal baseline LVEF 60%.",
+    comorbidities: ["Mild Osteopenia"],
+    currentMedications: ["Calcium Carbonate 500mg OD", "Vitamin D3 60,000 IU/month"],
+    knownAllergies: ["None known"],
+    menopausalStatus: "postmenopausal",
+    pregnancyStatus: "not_applicable",
+    status: "assessment_complete",
+    verified: true,
+    documents: [
+      {
+        id: "TMC-DOC-001",
+        name: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        category: "Histopathology Report",
+        uploadDate: "2026-11-15",
+        fileType: "application/pdf",
+        fileSize: "614 KB",
+        rawText:
+          "TATA MEMORIAL CENTRE\n" +
+          "TATA MEMORIAL HOSPITAL & ACTREC, PAREL, MUMBAI - 400012\n" +
+          "DEPARTMENT OF SURGICAL PATHOLOGY & ONCO-PATHOLOGY\n\n" +
+          "PATIENT NAME: Mrs. Sunita Deshmukh\n" +
+          "HOSPITAL REGISTRATION NO: TMC-MUM-2026-09412\n" +
+          "AGE / GENDER: 54 Yrs / Female\n" +
+          "REFERRING UNIT: Breast Disease Management Group (DMG), TMC Mumbai\n" +
+          "SPECIMEN: Core Needle Biopsy - Right Breast Mass (Upper Outer Quadrant)\n" +
+          "DATE OF REPORT: 15-Nov-2026\n\n" +
+          "HISTOPATHOLOGICAL FINDINGS:\n" +
+          "Sections demonstrate multiple cores of breast parenchyma infiltrated by neoplasm forming tubules and cohesive nests.\n" +
+          "- HISTOLOGICAL TYPE: Invasive Carcinoma of No Special Type (Invasive Ductal Carcinoma - NST)\n" +
+          "- NOTTINGHAM GRADE: Grade 2 (Tubule score 2, Pleomorphism 2, Mitosis 1; Total score 5/9)\n" +
+          "- MAXIMUM TUMOUR DIMENSION: 24 mm (2.4 cm, cT2)\n" +
+          "- LYMPHOVASCULAR INVASION: Not identified\n" +
+          "- MICROCALCIFICATIONS: Present\n\n" +
+          "IMMUNOHISTOCHEMISTRY (IHC) (ASCO/CAP Standards):\n" +
+          "- Estrogen Receptor (ER): Strong nuclear positivity in 85% of invasive tumor cells (Allred Score 8/8) - POSITIVE\n" +
+          "- Progesterone Receptor (PR): Moderate nuclear positivity in 70% of invasive tumor cells (Allred Score 7/8) - POSITIVE\n" +
+          "- HER2 / neu: Score 1+ (Faint incomplete membranous staining in >10% cells) - NEGATIVE\n" +
+          "- Ki-67 Proliferation Marker: 14% positive nuclear staining (Low proliferation cutoff <20%)\n\n" +
+          "IMPRESSION & MOLECULAR SUBTYPE:\n" +
+          "Invasive Ductal Carcinoma, Grade 2 (cT2 cN0 cM0, Stage IIA).\n" +
+          "Surrogate Subtype: Luminal A-like (ER+ / PR+ / HER2 Negative / Low Ki-67).",
+        status: "verified",
+      },
+    ],
+    extractedFindings: [
+      {
+        id: "TMC-FND-001",
+        category: "tumour",
+        label: "Tumour Maximum Dimension",
+        fieldKey: "primary_tumor_size_mm",
+        extractedValue: 24,
+        verifiedValue: 24,
+        unit: "mm",
+        originalText: "MAXIMUM TUMOUR DIMENSION: 24 mm (2.4 cm, cT2)",
+        sourceDocName: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        confidence: 0.99,
+        status: "confirmed",
+        negation: false,
+        uncertainty: false,
+      },
+      {
+        id: "TMC-FND-002",
+        category: "tumour",
+        label: "Histological Type",
+        fieldKey: "histologic_type",
+        extractedValue: "Invasive Ductal Carcinoma",
+        verifiedValue: "Invasive Ductal Carcinoma",
+        originalText: "Invasive Carcinoma of No Special Type (Invasive Ductal Carcinoma - NST)",
+        sourceDocName: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        confidence: 0.99,
+        status: "confirmed",
+        negation: false,
+        uncertainty: false,
+      },
+      {
+        id: "TMC-FND-003",
+        category: "tumour",
+        label: "Nottingham Histological Grade",
+        fieldKey: "histologic_grade",
+        extractedValue: "Grade 2",
+        verifiedValue: "Grade 2",
+        originalText: "Grade 2 (Tubule score 2, Pleomorphism 2, Mitosis 1; Total score 5/9)",
+        sourceDocName: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        confidence: 0.98,
+        status: "confirmed",
+        negation: false,
+        uncertainty: false,
+      },
+      {
+        id: "TMC-FND-004",
+        category: "biomarkers",
+        label: "Estrogen Receptor (ER) Expression",
+        fieldKey: "er_percentage",
+        extractedValue: 85,
+        verifiedValue: 85,
+        unit: "%",
+        originalText: "Estrogen Receptor (ER): Strong nuclear positivity in 85% of invasive tumor cells",
+        sourceDocName: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        confidence: 0.99,
+        status: "confirmed",
+        negation: false,
+        uncertainty: false,
+      },
+      {
+        id: "TMC-FND-005",
+        category: "biomarkers",
+        label: "Progesterone Receptor (PR) Expression",
+        fieldKey: "pr_percentage",
+        extractedValue: 70,
+        verifiedValue: 70,
+        unit: "%",
+        originalText: "Progesterone Receptor (PR): Moderate nuclear positivity in 70% of invasive tumor cells",
+        sourceDocName: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        confidence: 0.99,
+        status: "confirmed",
+        negation: false,
+        uncertainty: false,
+      },
+      {
+        id: "TMC-FND-006",
+        category: "biomarkers",
+        label: "HER2 / neu IHC Score",
+        fieldKey: "her2_ihc_score",
+        extractedValue: "1+ (Negative)",
+        verifiedValue: "1+ (Negative)",
+        originalText: "HER2 / neu: Score 1+ (Faint incomplete membranous staining in >10% cells) - NEGATIVE",
+        sourceDocName: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        confidence: 0.98,
+        status: "confirmed",
+        negation: false,
+        uncertainty: false,
+      },
+      {
+        id: "TMC-FND-007",
+        category: "biomarkers",
+        label: "Ki-67 Proliferation Index",
+        fieldKey: "ki67_index",
+        extractedValue: 14,
+        verifiedValue: 14,
+        unit: "%",
+        originalText: "Ki-67 Proliferation Marker: 14% positive nuclear staining",
+        sourceDocName: "Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf",
+        confidence: 0.97,
+        status: "confirmed",
+        negation: false,
+        uncertainty: false,
+      },
+    ],
+    clinicalStaging: {
+      tCategory: "cT2",
+      nCategory: "cN0",
+      mCategory: "cM0",
+      stageGroup: "Stage IIA",
+      tumorSizeMm: 24,
+      isIncomplete: false,
+    },
+    biomarkers: {
+      erStatus: "positive",
+      erPercent: 85,
+      prStatus: "positive",
+      prPercent: 70,
+      her2Ihc: "1+",
+      her2Status: "negative",
+      ki67Percent: 14,
+      histologicGrade: "Grade 2",
+      histologicType: "Invasive Ductal Carcinoma (NST)",
+      surrogateSubtype: "Luminal A-like",
+    },
+    safetyStatus: {
+      overallStatus: "safe",
+      lvefPercent: 60,
+      crclMlMin: 78,
+      warnings: [
+        {
+          ruleId: "SAFE-BONE-CHECK",
+          title: "Pre-existing Mild Osteopenia with Aromatase Inhibitors",
+          severity: "moderate",
+          description: "Aromatase Inhibitors (Letrozole/Anastrozole) accelerate bone resorption. Baseline DEXA scan and calcium/vitamin D optimization indicated.",
+          clinicalAction: "Prescribe Letrozole 2.5mg OD co-administered with Calcium + Vit D; repeat DEXA scan at 24 months.",
+        },
+      ],
+    },
+    guidelinesTriggered: [
+      {
+        ruleId: "ESMO-2024-HR-ADJ-ENDO",
+        ruleName: "Adjuvant Endocrine Therapy in Postmenopausal HR+ Breast Cancer",
+        source: "ESMO Early Breast Cancer Guidelines 2024",
+        status: "applicable",
+        rationale: "Strong ER (85%) and PR (70%) expression in postmenopausal female is a Class I, Level A indication for aromatase inhibitors.",
+        suggestedPathway: "Letrozole 2.5 mg daily for 5 years minimum.",
+      },
+      {
+        ruleId: "ESMO-2024-BCS-RT",
+        ruleName: "Breast Conserving Surgery with Whole Breast Radiotherapy",
+        source: "ESMO 2024 / Tata Memorial DMG Guidelines",
+        status: "applicable",
+        rationale: "Unicentric 2.4 cm tumor in right breast suitable for breast conservation followed by adjuvant RT.",
+        suggestedPathway: "Wide Local Excision + SLNB + Post-op Whole Breast Radiation.",
+      },
+    ],
+    treatmentOptions: [
+      {
+        id: "TX-TMC-01",
+        title: "Adjuvant Aromatase Inhibitor (Letrozole 2.5 mg OD for 5–10 Years)",
+        modality: "Endocrine Therapy",
+        intent: "Adjuvant Curative / Relapse Prevention",
+        status: "supported",
+        supportingGuideline: "ESMO 2024 / BIG 1-98 Trial / Tata Memorial DMG Protocol",
+        rationale: "Superior disease-free survival over tamoxifen in postmenopausal patients with strongly hormone receptor-positive disease.",
+        rank: 1,
+        rankBadge: "Rank 1: Preferred First-Line Standard of Care",
+        whyChosen: [
+          "ER 85% and PR 70% positivity establishes high endocrine sensitivity.",
+          "Postmenopausal status: AIs deliver significant reduction in distant recurrence compared to tamoxifen.",
+          "High benefit-to-risk ratio; baseline LVEF 60% and renal CrCl 78 mL/min are preserved.",
+        ],
+        doctorFeedback: {
+          action: "accepted",
+          comment: "Accepted by TMC Breast DMG. Letrozole 2.5mg OD initiated. Baseline DEXA ordered for osteopenia monitoring.",
+          oncologistName: "Dr. R. Nair, Tata Memorial Hospital",
+          timestamp: "2026-11-16 11:30",
+        },
+      },
+      {
+        id: "TX-TMC-02",
+        title: "Breast Conserving Surgery (BCS) + Sentinel Lymph Node Biopsy (SLNB)",
+        modality: "Surgical Resection",
+        intent: "Primary Local Control",
+        status: "supported",
+        supportingGuideline: "ESMO 2024 / ASCO Surgical Consensus",
+        rationale: "Unicentric 24 mm tumor in upper outer quadrant has favorable tumor-to-breast ratio for breast preservation with clear margins.",
+        rank: 2,
+        rankBadge: "Rank 2: Preferred Surgical Standard of Care",
+        whyChosen: [
+          "Tumor diameter 24 mm amenable to negative microscopic margins without mastectomy.",
+          "Requires whole-breast radiotherapy (40 Gy in 15 fractions) post-surgery.",
+        ],
+      },
+      {
+        id: "TX-TMC-03",
+        title: "Cytotoxic Chemotherapy (TC: Docetaxel + Cyclophosphamide x 4 cycles)",
+        modality: "Cytotoxic Chemotherapy",
+        intent: "Adjuvant Risk Reduction",
+        status: "review_required",
+        supportingGuideline: "St. Gallen 2023 / ESMO 2024",
+        rationale: "For Luminal A-like disease with low Ki-67 (14%) and clinically node-negative status, routine chemotherapy is frequently spared.",
+        rank: 3,
+        rankBadge: "Rank 3: Disfavored / Genomic Assay Indication",
+        whyChosen: [
+          "Low proliferation index (Ki-67 14%) implies minimal benefit from cytotoxic agents.",
+          "Genomic assay (CanAssist Breast / Oncotype DX) recommended to formally confirm safe chemotherapy omission.",
+        ],
+      },
+      {
+        id: "TX-TMC-04",
+        title: "Anti-HER2 Targeted Monoclonal Antibodies (Trastuzumab + Pertuzumab)",
+        modality: "Targeted Biotherapy",
+        intent: "Targeted Therapy",
+        status: "contraindicated",
+        supportingGuideline: "ASCO/CAP HER2 Guidelines",
+        rationale: "HER2 IHC 1+ is negative. Targeted anti-HER2 therapy provides no efficacy in HER2-negative early breast cancer.",
+        contraindicationNote: "NOT INDICATED / WITHHELD: Tumor is HER2 IHC 1+ (Negative / Non-amplified). Exposing patient to anti-HER2 antibodies incurs unnecessary cardiotoxicity without clinical benefit.",
+        rank: 4,
+        rankBadge: "Rank 4: Contraindicated / Not Indicated",
+        whyChosen: [
+          "HER2 score 1+ represents non-amplified tumor.",
+          "Clinical practice guidelines strictly restrict trastuzumab to HER2 3+ or ISH-amplified tumors.",
+        ],
+      },
+    ],
+  },
   {
     id: "BC-2026-0842",
     name: "Margaret Sullivan",
@@ -606,14 +895,14 @@ export const PatientStore = {
   },
 
   getActivePatientId(): string {
-    if (typeof window === "undefined") return "BC-2026-0842";
+    if (typeof window === "undefined") return "TMC-2026-09412";
     try {
       const active = localStorage.getItem("cdss_active_patient_id");
       if (active) return active;
     } catch {
       // fallback
     }
-    return "BC-2026-0842";
+    return "TMC-2026-09412";
   },
 
   setActivePatientId(id: string) {
@@ -809,6 +1098,31 @@ export const PatientStore = {
 
     this.savePatients(patients);
   },
+
+  saveDoctorFeedback(
+    patientId: string,
+    treatmentId: string,
+    feedback: {
+      action: "accepted" | "modified" | "rejected" | "under_review";
+      comment: string;
+      oncologistName: string;
+    }
+  ) {
+    const patients = this.getPatients();
+    const patient = patients.find((p) => p.id === patientId);
+    if (!patient) return;
+    const treatment = patient.treatmentOptions.find((t) => t.id === treatmentId);
+    if (treatment) {
+      treatment.doctorFeedback = {
+        ...feedback,
+        timestamp: new Date().toISOString().slice(0, 16).replace("T", " "),
+      };
+      this.savePatients(patients);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("cdss_active_patient_changed"));
+      }
+    }
+  },
 };
 
 export const getPatients = (): PatientRecord[] => PatientStore.getPatients();
@@ -816,4 +1130,13 @@ export const getActivePatient = (): PatientRecord | null => PatientStore.getActi
 export const setActivePatientId = (id: string): void => PatientStore.setActivePatientId(id);
 export const getPatient = (id: string): PatientRecord | undefined => PatientStore.getPatient(id);
 export const savePatients = (patients: PatientRecord[]): void => PatientStore.savePatients(patients);
+export const saveDoctorFeedback = (
+  patientId: string,
+  treatmentId: string,
+  feedback: {
+    action: "accepted" | "modified" | "rejected" | "under_review";
+    comment: string;
+    oncologistName: string;
+  }
+) => PatientStore.saveDoctorFeedback(patientId, treatmentId, feedback);
 

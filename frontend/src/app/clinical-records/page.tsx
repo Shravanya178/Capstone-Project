@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   UploadCloud,
   FileText,
@@ -366,26 +367,65 @@ export default function ClinicalRecordsPage() {
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setDocName("Core_Biopsy_Pathology_Sample.pdf");
-                    setDocCategory("Histopathology Report");
-                    setReportText(
-                      "CLINICAL HISTORY: 62yo female with 2.2 cm left upper outer quadrant mass.\n" +
-                      "HISTOPATHOLOGY: Invasive ductal carcinoma (NST), Nottingham histological grade 2 (tubule 2, pleomorphism 2, mitosis 1, total score 5/9).\n" +
-                      "IMMUNOHISTOCHEMISTRY:\n" +
-                      "- Estrogen Receptor (ER): Strong nuclear positivity in 85% of tumor cells.\n" +
-                      "- Progesterone Receptor (PR): Moderate nuclear positivity in 70% of tumor cells.\n" +
-                      "- HER2/neu: Score 1+ (Negative, membranous staining weak and incomplete).\n" +
-                      "- Ki-67 proliferation index: 12% positive nuclei.\n" +
-                      "- Lymphovascular invasion (LVI): Not identified."
-                    );
-                  }}
-                  className="text-xs text-[#4E8276] hover:underline font-semibold"
-                >
-                  Insert Sample Clinical Text
-                </button>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDocName("Tata_Memorial_Hospital_Pathology_Report_TMC-09412.pdf");
+                      setDocCategory("Histopathology Report");
+                      setReportText(
+                        "TATA MEMORIAL CENTRE\n" +
+                        "TATA MEMORIAL HOSPITAL & ACTREC, PAREL, MUMBAI - 400012\n" +
+                        "DEPARTMENT OF SURGICAL PATHOLOGY & ONCO-PATHOLOGY\n\n" +
+                        "PATIENT NAME: Mrs. Sunita Deshmukh\n" +
+                        "HOSPITAL REGISTRATION NO: TMC-MUM-2026-09412\n" +
+                        "AGE / GENDER: 54 Yrs / Female\n" +
+                        "REFERRING UNIT: Breast Disease Management Group (DMG), TMC Mumbai\n" +
+                        "SPECIMEN: Core Needle Biopsy - Right Breast Mass (Upper Outer Quadrant)\n" +
+                        "DATE OF REPORT: 15-Nov-2026\n\n" +
+                        "HISTOPATHOLOGICAL FINDINGS:\n" +
+                        "Sections demonstrate multiple cores of breast parenchyma infiltrated by neoplasm forming tubules and cohesive nests.\n" +
+                        "- HISTOLOGICAL TYPE: Invasive Carcinoma of No Special Type (Invasive Ductal Carcinoma - NST)\n" +
+                        "- NOTTINGHAM GRADE: Grade 2 (Tubule score 2, Pleomorphism 2, Mitosis 1; Total score 5/9)\n" +
+                        "- MAXIMUM TUMOUR DIMENSION: 24 mm (2.4 cm, cT2)\n" +
+                        "- LYMPHOVASCULAR INVASION: Not identified\n" +
+                        "- MICROCALCIFICATIONS: Present\n\n" +
+                        "IMMUNOHISTOCHEMISTRY (IHC) (ASCO/CAP Standards):\n" +
+                        "- Estrogen Receptor (ER): Strong nuclear positivity in 85% of invasive tumor cells (Allred Score 8/8) - POSITIVE\n" +
+                        "- Progesterone Receptor (PR): Moderate nuclear positivity in 70% of invasive tumor cells (Allred Score 7/8) - POSITIVE\n" +
+                        "- HER2 / neu: Score 1+ (Faint incomplete membranous staining in >10% cells) - NEGATIVE\n" +
+                        "- Ki-67 Proliferation Marker: 14% positive nuclear staining (Low proliferation cutoff <20%)\n\n" +
+                        "IMPRESSION & MOLECULAR SUBTYPE:\n" +
+                        "Invasive Ductal Carcinoma, Grade 2 (cT2 cN0 cM0, Stage IIA).\n" +
+                        "Surrogate Subtype: Luminal A-like (ER+ / PR+ / HER2 Negative / Low Ki-67)."
+                      );
+                    }}
+                    className="text-xs bg-[#E8F1EE] text-[#2C5E53] hover:bg-[#D5E5E0] px-2.5 py-1.5 rounded border border-[#BED7CF] font-bold flex items-center gap-1.5"
+                  >
+                    <span>🇮🇳 Load Tata Memorial Centre (TMC Mumbai) Report</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDocName("Core_Biopsy_Pathology_Sample.pdf");
+                      setDocCategory("Histopathology Report");
+                      setReportText(
+                        "CLINICAL HISTORY: 62yo female with 2.2 cm left upper outer quadrant mass.\n" +
+                        "HISTOPATHOLOGY: Invasive ductal carcinoma (NST), Nottingham histological grade 2 (tubule 2, pleomorphism 2, mitosis 1, total score 5/9).\n" +
+                        "IMMUNOHISTOCHEMISTRY:\n" +
+                        "- Estrogen Receptor (ER): Strong nuclear positivity in 85% of tumor cells.\n" +
+                        "- Progesterone Receptor (PR): Moderate nuclear positivity in 70% of tumor cells.\n" +
+                        "- HER2/neu: Score 1+ (Negative, membranous staining weak and incomplete).\n" +
+                        "- Ki-67 proliferation index: 12% positive nuclei.\n" +
+                        "- Lymphovascular invasion (LVI): Not identified."
+                      );
+                    }}
+                    className="text-xs text-[#4E8276] hover:underline font-semibold"
+                  >
+                    Standard Sample Text
+                  </button>
+                </div>
 
                 <button
                   type="submit"
@@ -446,6 +486,17 @@ export default function ClinicalRecordsPage() {
                   </div>
                 ))}
               </div>
+            )}
+
+            {patient.documents.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("extract")}
+                className="w-full mt-4 py-2.5 px-4 bg-[#193B4A] text-white text-xs font-bold rounded-lg hover:bg-[#122B36] transition-colors flex items-center justify-center gap-2 shadow-xs"
+              >
+                <span>Next: Run Automated NLP Extraction</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             )}
           </div>
         </div>
@@ -521,6 +572,22 @@ export default function ClinicalRecordsPage() {
               {activeDoc?.rawText || "No document text available."}
             </pre>
           </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-[#68777C]">
+              {findings.length > 0
+                ? `${findings.length} clinical findings extracted from this document.`
+                : "Click 'Extract Clinical Information' above to parse findings."}
+            </span>
+            <button
+              type="button"
+              onClick={() => setActiveTab("verify")}
+              className="py-2.5 px-5 bg-[#193B4A] text-white text-xs font-bold rounded-lg hover:bg-[#122B36] transition-colors flex items-center gap-2 shadow-xs"
+            >
+              <span>Next: Review in Oncologist Verification Studio</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       )}
 
@@ -537,13 +604,22 @@ export default function ClinicalRecordsPage() {
               </p>
             </div>
 
-            <button
-              onClick={handleConfirmAndMap}
-              className="px-5 py-2.5 bg-[#4E8276] hover:bg-[#376258] text-white text-xs font-bold rounded-lg transition-all shadow-clinical-sm flex items-center space-x-2 active:scale-95 shrink-0"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Confirm & Map to Patient Record</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <button
+                onClick={handleConfirmAndMap}
+                className="px-4 py-2.5 bg-[#4E8276] hover:bg-[#376258] text-white text-xs font-bold rounded-lg transition-all shadow-clinical-sm flex items-center space-x-2 active:scale-95"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Confirm & Map to Patient Record</span>
+              </button>
+              <Link
+                href="/decision-support"
+                className="px-4 py-2.5 bg-[#193B4A] hover:bg-[#122B36] text-white text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 shadow-xs"
+              >
+                <span>Next: Decision Support & Ranked Treatments</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
 
           {/* Two-Column Studio Layout */}
